@@ -1,6 +1,12 @@
 package edu.java.bot.service;
 
 import edu.java.bot.configuration.BotConfig;
+import edu.java.bot.service.commands.Command;
+import edu.java.bot.service.commands.HelpCommand;
+import edu.java.bot.service.commands.ListCommand;
+import edu.java.bot.service.commands.StartCommand;
+import edu.java.bot.service.commands.TrackCommand;
+import edu.java.bot.service.commands.UntrackCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -17,19 +23,21 @@ import java.util.List;
 @Component
 @Slf4j
 public class TelegramBot extends TelegramLongPollingBot {
-    final BotConfig config;
-
+    private final BotConfig config;
+    private final List<Command> commands;
 
     public TelegramBot(BotConfig config) {
         this.config = config;
-        List<BotCommand> commands = new ArrayList<>();
-        commands.add(new BotCommand("/start", "register a user"));
-        commands.add(new BotCommand("/help", "display a window with commands"));
-        commands.add(new BotCommand("/track", "start tracking a link"));
-        commands.add(new BotCommand("/untrack", "stop tracking a link"));
-        commands.add(new BotCommand("/list", "show a list of tracked links"));
+        commands = new ArrayList<>();
+
+        commands.add(new StartCommand());
+        commands.add(new HelpCommand());
+        commands.add(new TrackCommand());
+        commands.add(new UntrackCommand());
+        commands.add(new ListCommand());
         try {
-            execute(new SetMyCommands(commands, new BotCommandScopeDefault(), null));
+            List<BotCommand> botCommands = commands.stream().map(Command::toApiCommand).toList();
+            execute(new SetMyCommands(botCommands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
             log.error("Error setting bot's command list: " + e.getMessage());
         }
@@ -46,44 +54,23 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     @Override
-    public void onRegister() {
-        super.onRegister();
-    }
-
-    @Override
     public void onUpdateReceived(Update update) {
-        //  есть сообщение от пользователя и в этом сообщении текст
         if (update.hasMessage() && update.getMessage().hasText()) {
-            String messageText = update.getMessage().getText();
             long chatId = update.getMessage().getChatId();
 
-            switch (messageText) {
-                case "/start": {
-                    startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
+            SendMessage sendMessage = new SendMessage(String.valueOf(chatId), "Нераспознная команда!");
+            for (Command command : commands) {
+                if (command.supports(update)) {
+                    sendMessage = command.handle(update);
                     break;
                 }
-                default:
-                    sendMessage(chatId, "I don't know this command!");
+            }
+
+            try {
+                execute(sendMessage);
+            } catch (TelegramApiException e) {
+                log.error("Error occurred " + e.getMessage());
             }
         }
-    }
-
-    private void startCommandReceived(long chatId, String userName) {
-        String answer = "Hi, " + userName + "! I'm glad to see you!";
-        sendMessage(chatId, answer);
-    }
-
-    private void sendMessage(long chatId, String textToSend) {
-        SendMessage message = new SendMessage(String.valueOf(chatId), textToSend);
-        try {
-            execute(message);
-        } catch (TelegramApiException e) {
-            log.error("Error occurred " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void onUpdatesReceived(List<Update> updates) {
-        super.onUpdatesReceived(updates);
     }
 }
