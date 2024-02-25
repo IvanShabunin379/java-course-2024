@@ -15,6 +15,10 @@ public interface Command {
         return update.getMessage().getText().equals(name());
     }
 
+    default String info() {
+        return name() + " - " + description();
+    }
+
     default BotCommand toApiCommand() {
         return new BotCommand(name(), description());
     }

@@ -2,11 +2,7 @@ package edu.java.bot.service;
 
 import edu.java.bot.configuration.BotConfig;
 import edu.java.bot.service.commands.Command;
-import edu.java.bot.service.commands.HelpCommand;
-import edu.java.bot.service.commands.ListCommand;
-import edu.java.bot.service.commands.StartCommand;
-import edu.java.bot.service.commands.TrackCommand;
-import edu.java.bot.service.commands.UntrackCommand;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -17,29 +13,23 @@ import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
 @Slf4j
 public class TelegramBot extends TelegramLongPollingBot {
     private final BotConfig config;
     private final List<Command> commands;
 
-    public TelegramBot(BotConfig config) {
+    public TelegramBot(BotConfig config, List<Command> commands) {
         this.config = config;
-        commands = new ArrayList<>();
+        this.commands = commands;
 
-        commands.add(new StartCommand());
-        commands.add(new HelpCommand());
-        commands.add(new TrackCommand());
-        commands.add(new UntrackCommand());
-        commands.add(new ListCommand());
         try {
-            List<BotCommand> botCommands = commands.stream().map(Command::toApiCommand).toList();
+            List<BotCommand> botCommands = commands.stream()
+                .map(Command::toApiCommand)
+                .toList();
             execute(new SetMyCommands(botCommands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
-            log.error("Error setting bot's command list: " + e.getMessage());
+            log.error("Error setting bot's command list: " + e.getMessage(), e);
         }
     }
 
@@ -69,7 +59,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             try {
                 execute(sendMessage);
             } catch (TelegramApiException e) {
-                log.error("Error occurred " + e.getMessage());
+                log.error("Error occurred " + e.getMessage(), e);
             }
         }
     }
