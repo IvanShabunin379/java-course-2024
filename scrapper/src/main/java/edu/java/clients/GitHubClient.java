@@ -3,6 +3,9 @@ package edu.java.clients;
 import edu.java.responses.GitHubResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 public class GitHubClient {
     private static final String BASE_URL = "https://api.github.com";
@@ -16,14 +19,21 @@ public class GitHubClient {
         this.webClient = WebClient.create(url);
     }
 
-    public GitHubResponse getRepositoryUpdate(@NotNull String owner, @NotNull String repository) {
-        webClient.get()
-            .uri("repos/{owner}/{repo}", owner, repository)
+    public List<GitHubResponse> getRepositoryUpdate(
+        @NotNull String owner, @NotNull String repository,
+        @NotNull OffsetDateTime lastChecked
+    ) {
+        return webClient.get()
+            .uri(uriBuilder -> uriBuilder.path("repos/{owner}/{repo}/activity")
+                .queryParam("after", lastChecked.toString())
+                .queryParam("direction", "asc")
+                .build(owner, repository))
             .retrieve()
-            .bodyToMono(GitHubResponse.class)
+            .bodyToFlux(GitHubResponse.class)
+            .switchIfEmpty(Flux.empty())
+            .collectList()
             .block();
-        //.onStatus(HttpStatus::is4xxClientError, clientResponse -> )
 
-        return null;
+        //.onStatus(HttpStatus::is4xxClientError, clientResponse -> )
     }
 }
