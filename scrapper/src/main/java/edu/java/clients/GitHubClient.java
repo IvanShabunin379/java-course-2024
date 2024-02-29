@@ -1,11 +1,11 @@
 package edu.java.clients;
 
 import edu.java.responses.GitHubResponse;
+import java.time.OffsetDateTime;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
-import java.time.OffsetDateTime;
-import java.util.List;
 
 public class GitHubClient {
     private static final String BASE_URL = "https://api.github.com";
