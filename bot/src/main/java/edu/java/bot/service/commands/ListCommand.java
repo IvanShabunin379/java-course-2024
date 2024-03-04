@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
 public class ListCommand implements Command {
-    private static final String EMPTY_LIST_MESSAGE = "Список отслеживаемых сслылок пуст.";
+    private static final String EMPTY_LIST_MESSAGE = "Список отслеживаемых ссылок пуст.";
 
     @Override
     public String name() {
