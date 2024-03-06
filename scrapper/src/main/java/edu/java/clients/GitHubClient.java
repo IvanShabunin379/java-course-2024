@@ -15,25 +15,21 @@ public class GitHubClient {
         this.webClient = WebClient.create(BASE_URL);
     }
 
-    public GitHubClient(String url) {
+    public GitHubClient(@NotNull String url) {
         this.webClient = WebClient.create(url);
     }
 
-    public List<GitHubResponse> getRepositoryUpdate(
-        @NotNull String owner, @NotNull String repository,
-        @NotNull OffsetDateTime lastChecked
+    public List<GitHubResponse> getRepositoryUpdates(
+            @NotNull String owner, @NotNull String repository,
+            @NotNull OffsetDateTime fromTimestamp
     ) {
         return webClient.get()
-            .uri(uriBuilder -> uriBuilder.path("repos/{owner}/{repo}/activity")
-                .queryParam("after", lastChecked.toString())
-                .queryParam("direction", "asc")
-                .build(owner, repository))
-            .retrieve()
-            .bodyToFlux(GitHubResponse.class)
-            .switchIfEmpty(Flux.empty())
-            .collectList()
-            .block();
-
-        //.onStatus(HttpStatus::is4xxClientError, clientResponse -> )
+                .uri(uriBuilder -> uriBuilder.path("repos/{owner}/{repo}/activity").build(owner, repository))
+                .retrieve()
+                .bodyToFlux(GitHubResponse.class)
+                .filter(response -> response.timestamp().isAfter(fromTimestamp))
+                .switchIfEmpty(Flux.empty())
+                .collectList()
+                .block();
     }
 }
