@@ -1,7 +1,7 @@
 package edu.java.utils;
 
-import java.util.List;
 import edu.java.exceptions.BadRequestException;
+import java.util.List;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 

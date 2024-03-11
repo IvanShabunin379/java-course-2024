@@ -1,15 +1,19 @@
 package edu.java.utils;
 
 import edu.java.dto.ApiErrorResponse;
+import java.util.Arrays;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import java.util.Arrays;
 
 public final class ControllerAdviceUtils {
     private ControllerAdviceUtils() {
     }
 
-    public static ResponseEntity<ApiErrorResponse> handleException(Exception e, HttpStatus httpStatus, String description) {
+    public static ResponseEntity<ApiErrorResponse> handleException(
+        Exception e,
+        HttpStatus httpStatus,
+        String description
+    ) {
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
             description,
             String.valueOf(httpStatus.value()),

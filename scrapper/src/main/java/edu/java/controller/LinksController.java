@@ -7,6 +7,7 @@ import edu.java.dto.RemoveLinkRequest;
 import edu.java.utils.ValidationUtils;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
 
 @RestController
 @RequestMapping("/links")
@@ -35,7 +35,7 @@ public class LinksController {
             ValidationUtils.handleBindingResultErrors(bindingResult);
         }
 
-        // TODO: добавить проверку на то, что чата с таким id не существует, и, если это так, выбрасывать соотв. исключение
+        // TODO: добавить проверку на то, что чата с таким id не существует, если это так, выбрасывать соотв. исключение
 
         log.info("GET: Links were received successfully.");
         return ResponseEntity.status(HttpStatus.OK).body(new ListLinksResponse(List.of(), 0L));
@@ -51,7 +51,7 @@ public class LinksController {
             ValidationUtils.handleBindingResultErrors(bindingResult);
         }
 
-        // TODO: добавить проверку на то, в данном чате такая ссылка уже есть, и, если это так, выбрасывать соотв. исключение
+        // TODO: добавить проверку на то, что в данном чате такая ссылка уже есть
 
         log.info("POST: Link {} was added successfully.", addLinkRequest.link());
         return ResponseEntity.status(HttpStatus.OK).body(new LinkResponse(0L, addLinkRequest.link()));
@@ -67,9 +67,9 @@ public class LinksController {
             ValidationUtils.handleBindingResultErrors(bindingResult);
         }
 
-        // TODO: добавить проверку на то, что чата с таким id не существует, и, если это так, выбрасывать соотв. исключение
-        // TODO: добавить проверку на то, что ссылки с таким id не существует , и, если это так, выбрасывать соотв. исключение
-        // TODO: добавить проверку на то, в данном чате нет такой ссылки, и, если это так, выбрасывать соотв. исключение
+        // TODO: добавить проверку на то, что чата с таким id не сущ-ет, если это так, выбрасывать соотв. исключение
+        // TODO: добавить проверку на то, что ссылки с таким id не сущ-ет, если это так, выбрасывать соотв. исключение
+        // TODO: добавить проверку на то, в данном чате нет такой ссылки, если это так, выбрасывать соотв. исключение
 
         log.info("DELETE: Link {} was removed successfully.", removeLinkRequest.link());
         return ResponseEntity.status(HttpStatus.OK).body(new LinkResponse(0L, removeLinkRequest.link()));

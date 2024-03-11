@@ -24,7 +24,7 @@ public class TgChatController {
             ValidationUtils.handleBindingResultErrors(bindingResult);
         }
 
-        // TODO: добавить проверку на то, что чат уже зарегистрирован, и, если это так, выбрасывать соотв. исключение
+        // TODO: добавить проверку на то, что чат уже зарегистрирован, если это так, выбрасывать соотв. исключение
 
         log.info("POST: Chat #{} was registered successfully.", id);
         return ResponseEntity.ok(HttpStatus.OK);
@@ -36,7 +36,7 @@ public class TgChatController {
             ValidationUtils.handleBindingResultErrors(bindingResult);
         }
 
-        // TODO: добавить проверку на то, что чата с таким id не существует, и, если это так, выбрасывать соотв. исключение
+        // TODO: добавить проверку на то, что чата с таким id не существует, если это так, выбрасывать соотв. исключение
 
         log.info("DELETE: Chat #{} was removed successfully.", id);
         return ResponseEntity.ok(HttpStatus.OK);
