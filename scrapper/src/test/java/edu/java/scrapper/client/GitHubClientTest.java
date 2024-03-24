@@ -34,26 +34,24 @@ public class GitHubClientTest extends AbstractClientTest {
     @Test
     @SneakyThrows
     public void shouldGetGitHubResponses() {
-        server.stubFor(get(urlPathMatching("/repos/owner/repository"))
+        server.stubFor(get(urlPathMatching("/repos/owner/repository/activity"))
             .willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
-                .withBody(jsonToString("D:\\WebScraperBot\\java-course-2024\\scrapper\\src\\test\\resources\\github.json"))
+                .withBody(jsonToString("src/test/resources/github.json"))
             )
         );
 
         List<GitHubResponse> responses = githubClient.getRepositoryUpdates(
             "owner",
             "repository",
-            OffsetDateTime.of(2024, 3, 7, 20, 0, 0, 0, ZoneOffset.UTC)
+            OffsetDateTime.of(2024, 3, 7, 20, 5, 0, 0, ZoneOffset.UTC)
         );
 
-        assertThat(responses).hasSize(3);
+        assertThat(responses).hasSize(2);
         assertThat(responses.get(0).activityType()).isEqualTo("branch_creation");
         assertThat(responses.get(0).timestamp().toString()).isEqualTo("2024-03-07T21:11:39Z");
         assertThat(responses.get(1).activityType()).isEqualTo("push");
         assertThat(responses.get(1).timestamp().toString()).isEqualTo("2024-03-07T20:09:03Z");
-        assertThat(responses.get(2).activityType()).isEqualTo("push");
-        assertThat(responses.get(2).timestamp().toString()).isEqualTo("2024-03-07T20:02:35Z");
     }
 }
