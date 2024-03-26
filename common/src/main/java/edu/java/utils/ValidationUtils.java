@@ -2,13 +2,12 @@ package edu.java.utils;
 
 import edu.java.exceptions.BadRequestException;
 import java.util.List;
+import lombok.experimental.UtilityClass;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-public final class ValidationUtils {
-    private ValidationUtils() {
-    }
-
+@UtilityClass
+public class ValidationUtils {
     public static void handleBindingResultErrors(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();

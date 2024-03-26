@@ -41,7 +41,7 @@ public class LinksController {
         return ResponseEntity.status(HttpStatus.OK).body(new ListLinksResponse(List.of(), 0L));
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<LinkResponse> addLink(
         @RequestHeader("Tg-Chat-Id") @Positive long chatId,
         @RequestBody @Valid AddLinkRequest addLinkRequest,
@@ -57,7 +57,7 @@ public class LinksController {
         return ResponseEntity.status(HttpStatus.OK).body(new LinkResponse(0L, addLinkRequest.link()));
     }
 
-    @DeleteMapping()
+    @DeleteMapping
     public ResponseEntity<LinkResponse> removeLink(
         @RequestHeader("Tg-Chat-Id") @Positive long chatId,
         @RequestBody @Valid RemoveLinkRequest removeLinkRequest,
