@@ -13,3 +13,10 @@ server:
 
 logging:
   config: classpath:log4j2-plain.xml
+
+# Конфигурация Swagger UI
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui
