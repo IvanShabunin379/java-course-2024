@@ -3,6 +3,8 @@ package edu.java.bot.client;
 import edu.java.dto.AddLinkRequest;
 import edu.java.dto.LinkResponse;
 import edu.java.dto.ListLinksResponse;
+import edu.java.dto.RemoveLinkRequest;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -48,19 +50,19 @@ public class ScrapperClient {
         return webClient.post()
             .uri("/links")
             .header("Tg-Chat-Id", String.valueOf(chatId))
-            .body(BodyInserters.fromValue(addLinkRequest))
+            .bodyValue(addLinkRequest)
             .retrieve()
             .bodyToMono(LinkResponse.class)
             .block();
     }
 
-    /* public LinkResponse untrackLink(long chatId, RemoveLinkRequest removeLinkRequest) {
-        return webClient.delete()
+    public LinkResponse untrackLink(long chatId, RemoveLinkRequest removeLinkRequest) {
+        return webClient.method(HttpMethod.DELETE)
             .uri("/links")
             .header("Tg-Chat-Id", String.valueOf(chatId))
             .body(BodyInserters.fromValue(removeLinkRequest))
             .retrieve()
             .bodyToMono(LinkResponse.class)
             .block();
-    } */
+    }
 }

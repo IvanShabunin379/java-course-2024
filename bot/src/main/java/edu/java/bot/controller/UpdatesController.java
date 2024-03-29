@@ -1,11 +1,15 @@
 package edu.java.bot.controller;
 
+import edu.java.dto.ApiErrorResponse;
 import edu.java.dto.LinkUpdateRequest;
 import edu.java.utils.ValidationUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,9 +19,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/updates")
 @Slf4j
+@ApiResponses({
+    @ApiResponse(
+        responseCode = "400",
+        description = "Некорректные параметры запроса",
+        content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
+    )
+})
 public class UpdatesController {
+    @Operation(summary = "Отправить обновление")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Обновление обработано"),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Чат не существует",
+            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Ссылка не существует",
+            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Ссылка не отслеживается в данном чате",
+            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
+        )
+    })
     @PostMapping
-    public ResponseEntity<HttpStatus> sendLinkUpdate(
+    public void sendLinkUpdate(
         @RequestBody @Valid LinkUpdateRequest linkUpdateRequest,
         BindingResult bindingResult
     ) {
@@ -30,6 +60,5 @@ public class UpdatesController {
         // TODO: добавить проверку на то, что ссылка находится хотя бы в одном чате
 
         log.info("POST: Link Update for {} has been processed successfully.", linkUpdateRequest.url());
-        return ResponseEntity.ok(HttpStatus.OK);
     }
 }
