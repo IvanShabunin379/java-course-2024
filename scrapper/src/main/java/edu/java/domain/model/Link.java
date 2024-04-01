@@ -1,4 +1,7 @@
 package edu.java.domain.model;
 
-public class Link {
+import java.net.URI;
+import java.time.OffsetDateTime;
+
+public record Link(long id, URI url, OffsetDateTime lastCheckTime) {
 }

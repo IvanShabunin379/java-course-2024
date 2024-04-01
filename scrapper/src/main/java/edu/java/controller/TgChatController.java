@@ -1,10 +1,15 @@
 package edu.java.controller;
 
+import edu.java.dto.ApiErrorResponse;
+import edu.java.service.TgChatsService;
 import edu.java.utils.ValidationUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.constraints.Positive;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,29 +22,55 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/tg-chat")
 @Validated
 @Slf4j
+@ApiResponses({
+    @ApiResponse(
+        responseCode = "400",
+        description = "Некорректные параметры запроса",
+        content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
+    )
+})
 public class TgChatController {
-    @PostMapping("/{id}")
-    public ResponseEntity<HttpStatus> registerChat(@PathVariable long id, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            ValidationUtils.handleBindingResultErrors(bindingResult);
-        }
+    private final TgChatsService tgChatsService;
 
-        // TODO: добавить проверку на то, что чат уже зарегистрирован, если это так, выбрасывать соотв. исключение
-
-        log.info("POST: Chat #{} was registered successfully.", id);
-        return ResponseEntity.ok(HttpStatus.OK);
+    public TgChatController(TgChatsService tgChatsService) {
+        this.tgChatsService = tgChatsService;
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> removeChat(@PathVariable @Positive long id, BindingResult bindingResult) {
+    @Operation(summary = "Зарегистрировать чат")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Чат зарегистрирован"),
+        @ApiResponse(
+            responseCode = "409",
+            description = "Чат уже зарегистрирован",
+            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
+        )
+    })
+    @PostMapping("/{id}")
+    public void registerChat(@PathVariable long id, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             ValidationUtils.handleBindingResultErrors(bindingResult);
         }
 
-        // TODO: добавить проверку на то, что чата с таким id не существует, если это так, выбрасывать соотв. исключение
+        tgChatsService.register(id);
+        log.info("POST: Chat #{} was registered successfully.", id);
+    }
 
+    @Operation(summary = "Удалить чат")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Чат успешно удалён"),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Чат не существует",
+            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
+        )
+    })
+    @DeleteMapping("/{id}")
+    public void removeChat(@PathVariable @Positive long id, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            ValidationUtils.handleBindingResultErrors(bindingResult);
+        }
+
+        tgChatsService.unregister(id);
         log.info("DELETE: Chat #{} was removed successfully.", id);
-        return ResponseEntity.ok(HttpStatus.OK);
     }
 }
-
