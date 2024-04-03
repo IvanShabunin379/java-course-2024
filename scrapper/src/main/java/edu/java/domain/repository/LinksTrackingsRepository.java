@@ -7,7 +7,10 @@ import java.util.List;
 
 public interface LinksTrackingsRepository {
     void add(LinkTracking linkTracking);
+
     boolean remove(LinkTracking linkTracking);
+
     List<Link> findAllLinksByTgChat(long tgChatId);
+
     List<TgChat> findAllTgChatsByLink(long linkId);
 }

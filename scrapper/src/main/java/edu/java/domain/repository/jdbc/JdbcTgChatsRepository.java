@@ -2,13 +2,13 @@ package edu.java.domain.repository.jdbc;
 
 import edu.java.domain.model.TgChat;
 import edu.java.domain.repository.TgChatsRepository;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class JdbcTgChatsRepository implements TgChatsRepository {
