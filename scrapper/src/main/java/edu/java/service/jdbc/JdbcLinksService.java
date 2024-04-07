@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class JdbcLinksService implements LinksService {
     JdbcTgChatsRepository tgChatsRepository;
     JdbcLinksRepository linksRepository;
@@ -67,7 +68,7 @@ public class JdbcLinksService implements LinksService {
         return link;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<Link> listAll(long tgChatId) {
         TgChat chat = tgChatsRepository.findById(tgChatId)

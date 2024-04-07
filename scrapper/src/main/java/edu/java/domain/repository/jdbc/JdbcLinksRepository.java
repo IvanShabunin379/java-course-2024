@@ -28,16 +28,25 @@ public class JdbcLinksRepository implements LinksRepository {
         jdbcTemplate.update(sql, url);
     }
 
-    public void removeById(long id) {
-        jdbcTemplate.update("DELETE FROM links WHERE id = ?", id);
+    public boolean removeById(long id) {
+        return jdbcTemplate.update("DELETE FROM links WHERE id = ?", id) == 1;
     }
 
-    public void removeByUrl(URI url) {
-        jdbcTemplate.update("DELETE FROM links WHERE url = ?", url);
+    public boolean removeByUrl(URI url) {
+        return jdbcTemplate.update("DELETE FROM links WHERE url = ?", url) == 1;
     }
 
     public List<Link> findAll() {
         return jdbcTemplate.query("SELECT * FROM links", new BeanPropertyRowMapper<>(Link.class));
+    }
+
+    @Override
+    public List<Link> findUncheckedLinksForLongestTime(int count) {
+        return jdbcTemplate.query(
+            "SELECT * FROM links ORDER BY last_checked_time ASC LIMIT ?",
+            new Object[] {count},
+            new BeanPropertyRowMapper<>(Link.class)
+        );
     }
 
     public Optional<Link> findById(long id) {
@@ -64,5 +73,15 @@ public class JdbcLinksRepository implements LinksRepository {
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public boolean update(Link link) {
+        return jdbcTemplate.update(
+            "UPDATE links SET url = ?, last_checked_time = ? WHERE id = ?",
+            link.url(),
+            link.lastCheckTime(),
+            link.id()
+        ) == 1;
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class JdbcTgChatsService implements TgChatsService {
     private final JdbcTgChatsRepository tgChatsRepository;
 
@@ -16,8 +17,6 @@ public class JdbcTgChatsService implements TgChatsService {
         this.tgChatsRepository = tgChatsRepository;
     }
 
-
-    @Transactional
     @Override
     public void register(long tgChatId) {
         try {
@@ -27,7 +26,6 @@ public class JdbcTgChatsService implements TgChatsService {
         }
     }
 
-    @Transactional
     @Override
     public void unregister(long tgChatId) {
         if (!tgChatsRepository.remove(tgChatId)) {

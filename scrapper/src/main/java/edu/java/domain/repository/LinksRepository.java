@@ -8,13 +8,17 @@ import java.util.Optional;
 public interface LinksRepository {
     void add(URI url);
 
-    void removeById(long id);
+    boolean removeById(long id);
 
-    void removeByUrl(URI url);
+    boolean removeByUrl(URI url);
 
     List<Link> findAll();
+
+    List<Link> findUncheckedLinksForLongestTime(int count);
 
     Optional<Link> findById(long id);
 
     Optional<Link> findByUrl(URI url);
+
+    boolean update(Link link);
 }
