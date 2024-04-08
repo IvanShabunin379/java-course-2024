@@ -1,6 +1,6 @@
 package edu.java.domain.repository.jdbc;
 
-import edu.java.domain.model.Link;
+import edu.java.domain.model.jdbc.Link;
 import edu.java.domain.repository.LinksRepository;
 import java.net.URI;
 import java.util.List;

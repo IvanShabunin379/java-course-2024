@@ -1,6 +1,6 @@
 package edu.java.controller;
 
-import edu.java.domain.model.Link;
+import edu.java.domain.model.jdbc.Link;
 import edu.java.dto.AddLinkRequest;
 import edu.java.dto.ApiErrorResponse;
 import edu.java.dto.LinkResponse;

@@ -1,6 +1,6 @@
 package edu.java.domain.repository;
 
-import edu.java.domain.model.TgChat;
+import edu.java.domain.model.jdbc.TgChat;
 import java.util.List;
 import java.util.Optional;
 

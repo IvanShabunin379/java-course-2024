@@ -1,8 +1,8 @@
 package edu.java.service.jdbc;
 
-import edu.java.domain.model.Link;
-import edu.java.domain.model.LinkTracking;
-import edu.java.domain.model.TgChat;
+import edu.java.domain.model.jdbc.Link;
+import edu.java.domain.model.jdbc.LinkTracking;
+import edu.java.domain.model.jdbc.TgChat;
 import edu.java.domain.repository.jdbc.JdbcLinksRepository;
 import edu.java.domain.repository.jdbc.JdbcLinksTrackingsRepository;
 import edu.java.domain.repository.jdbc.JdbcTgChatsRepository;

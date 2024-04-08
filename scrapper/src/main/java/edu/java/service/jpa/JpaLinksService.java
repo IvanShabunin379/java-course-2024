@@ -1,15 +1,15 @@
-package edu.java.service.jooq;
+package edu.java.service.jpa;
 
 import edu.java.domain.model.jdbc.Link;
 import edu.java.service.LinksService;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 import java.net.URI;
 import java.util.List;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class JooqLinksService implements LinksService {
+public class JpaLinksService implements LinksService {
     @Override
     public Link add(long tgChatId, URI url) {
         return null;
@@ -20,7 +20,6 @@ public class JooqLinksService implements LinksService {
         return null;
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<Link> listAll(long tgChatId) {
         return null;
