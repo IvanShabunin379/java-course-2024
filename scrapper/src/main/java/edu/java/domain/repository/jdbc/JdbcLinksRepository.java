@@ -1,7 +1,6 @@
 package edu.java.domain.repository.jdbc;
 
 import edu.java.domain.model.Link;
-import edu.java.domain.repository.LinksRepository;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JdbcLinksRepository implements LinksRepository {
+public class JdbcLinksRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -40,11 +39,10 @@ public class JdbcLinksRepository implements LinksRepository {
         return jdbcTemplate.query("SELECT * FROM links", new BeanPropertyRowMapper<>(Link.class));
     }
 
-    @Override
-    public List<Link> findUncheckedLinksForLongestTime(int count) {
+    public List<Link> findUncheckedLinksForLongestTime(int limit) {
         return jdbcTemplate.query(
             "SELECT * FROM links ORDER BY last_checked_time ASC LIMIT ?",
-            new Object[] {count},
+            new Object[] {limit},
             new BeanPropertyRowMapper<>(Link.class)
         );
     }
@@ -75,7 +73,6 @@ public class JdbcLinksRepository implements LinksRepository {
         }
     }
 
-    @Override
     public boolean update(Link link) {
         return jdbcTemplate.update(
             "UPDATE links SET url = ?, last_checked_time = ? WHERE id = ?",

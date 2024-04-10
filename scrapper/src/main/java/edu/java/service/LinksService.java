@@ -10,4 +10,6 @@ public interface LinksService {
     Link remove(long tgChatId, URI url);
 
     List<Link> listAll(long tgChatId);
+
+    List<Link> findUncheckedLinksForLongestTime(int limit);
 }

@@ -6,10 +6,10 @@ import edu.java.domain.model.TgChat;
 import edu.java.domain.repository.jdbc.JdbcLinksRepository;
 import edu.java.domain.repository.jdbc.JdbcLinksTrackingsRepository;
 import edu.java.domain.repository.jdbc.JdbcTgChatsRepository;
-import edu.java.exceptions.LinkInChatAlreadyExistsException;
-import edu.java.exceptions.LinkInChatNotFoundException;
-import edu.java.exceptions.LinkNotFoundException;
-import edu.java.exceptions.TgChatNotFoundException;
+import edu.java.service.exceptions.LinkInChatAlreadyExistsException;
+import edu.java.service.exceptions.LinkInChatNotFoundException;
+import edu.java.service.exceptions.LinkNotFoundException;
+import edu.java.service.exceptions.TgChatNotFoundException;
 import edu.java.service.LinksService;
 import java.net.URI;
 import java.util.List;
@@ -74,5 +74,10 @@ public class JdbcLinksService implements LinksService {
         TgChat chat = tgChatsRepository.findById(tgChatId)
             .orElseThrow(TgChatNotFoundException::new);
         return linksTrackingsRepository.findAllLinksByTgChat(tgChatId);
+    }
+
+    @Override
+    public List<Link> findUncheckedLinksForLongestTime(int limit) {
+        return linksRepository.findUncheckedLinksForLongestTime(limit);
     }
 }
