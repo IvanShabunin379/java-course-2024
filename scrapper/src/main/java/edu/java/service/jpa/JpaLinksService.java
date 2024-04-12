@@ -1,7 +1,6 @@
 package edu.java.service.jpa;
 
 import edu.java.domain.model.jdbc.Link;
-import edu.java.domain.model.jdbc.TgChat;
 import edu.java.domain.model.jpa.LinkEntity;
 import edu.java.domain.model.jpa.TgChatEntity;
 import edu.java.domain.repository.jpa.JpaLinksRepository;
@@ -12,13 +11,10 @@ import edu.java.exceptions.LinkNotFoundException;
 import edu.java.exceptions.TgChatNotFoundException;
 import edu.java.service.LinksService;
 import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Service;
 import java.net.URI;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-@Service
 @Transactional
 public class JpaLinksService implements LinksService {
     private final JpaLinksRepository linksRepository;

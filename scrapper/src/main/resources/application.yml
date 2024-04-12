@@ -1,4 +1,5 @@
 app:
+  database-access-type: jpa
   scheduler:
     enable: true
     interval: 10s
@@ -12,6 +13,16 @@ spring:
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
+  liquibase:
+    enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
 
 server:
   port: 8080
