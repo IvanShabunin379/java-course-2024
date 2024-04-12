@@ -1,6 +1,5 @@
 package edu.java.configuration;
 
-import edu.java.domain.repository.TgChatsRepository;
 import edu.java.domain.repository.jpa.JpaLinksRepository;
 import edu.java.domain.repository.jpa.JpaTgChatsRepository;
 import edu.java.service.LinksService;

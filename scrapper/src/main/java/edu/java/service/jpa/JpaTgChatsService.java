@@ -1,6 +1,5 @@
 package edu.java.service.jpa;
 
-import edu.java.domain.model.jdbc.Link;
 import edu.java.domain.model.jdbc.TgChat;
 import edu.java.domain.model.jpa.LinkEntity;
 import edu.java.domain.model.jpa.TgChatEntity;
@@ -10,10 +9,10 @@ import edu.java.exceptions.LinkNotFoundException;
 import edu.java.exceptions.TgChatAlreadyExistsException;
 import edu.java.exceptions.TgChatNotFoundException;
 import edu.java.service.TgChatsService;
-import org.springframework.transaction.annotation.Transactional;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class JpaTgChatsService implements TgChatsService {
