@@ -1,0 +1,14 @@
+[
+    {
+        "timestamp": "2024-03-07T21:11:39Z",
+        "activity_type": "branch_creation"
+    },
+    {
+        "timestamp": "2024-03-07T20:09:03Z",
+        "activity_type": "push"
+    },
+    {
+        "timestamp": "2024-03-07T20:02:35Z",
+        "activity_type": "push"
+    }
+]
