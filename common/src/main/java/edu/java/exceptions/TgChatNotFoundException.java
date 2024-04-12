@@ -1,4 +1,4 @@
-package edu.java.service.exceptions;
+package edu.java.exceptions;
 
 public class TgChatNotFoundException extends RuntimeException {
 }
