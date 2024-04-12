@@ -25,4 +25,9 @@ public class JooqLinksService implements LinksService {
     public List<Link> listAll(long tgChatId) {
         return null;
     }
+
+    @Override
+    public List<Link> findUncheckedLinksForLongestTime(int limit) {
+        return null;
+    }
 }
