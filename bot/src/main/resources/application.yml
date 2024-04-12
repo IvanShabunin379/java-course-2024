@@ -1,5 +1,6 @@
 app:
   telegram-token: ${APP_TELEGRAM_TOKEN}
+  bot-name: "ISH_web_scraper_bot"
 
 spring:
   application:
