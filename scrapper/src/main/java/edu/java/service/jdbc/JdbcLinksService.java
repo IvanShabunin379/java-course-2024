@@ -20,9 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class JdbcLinksService implements LinksService {
-    JdbcTgChatsRepository tgChatsRepository;
-    JdbcLinksRepository linksRepository;
-    JdbcLinksTrackingsRepository linksTrackingsRepository;
+    private final JdbcTgChatsRepository tgChatsRepository;
+    private final JdbcLinksRepository linksRepository;
+    private final JdbcLinksTrackingsRepository linksTrackingsRepository;
 
     public JdbcLinksService(
         JdbcTgChatsRepository tgChatsRepository,
@@ -74,5 +74,10 @@ public class JdbcLinksService implements LinksService {
         TgChat chat = tgChatsRepository.findById(tgChatId)
             .orElseThrow(TgChatNotFoundException::new);
         return linksTrackingsRepository.findAllLinksByTgChat(tgChatId);
+    }
+
+    @Override
+    public List<Link> findUncheckedLinksForLongestTime(int limit) {
+        return linksRepository.findUncheckedLinksForLongestTime(limit);
     }
 }
