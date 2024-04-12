@@ -83,4 +83,12 @@ public class JpaLinksService implements LinksService {
             .map(linkEntity -> new Link(linkEntity.getId(), linkEntity.getUrl(), linkEntity.getLastCheckedTime()))
             .toList();
     }
+
+    @Override
+    public List<Link> findUncheckedLinksForLongestTime(int limit) {
+        return linksRepository.findAllByOrderByLastCheckedTime(limit)
+            .stream()
+            .map(linkEntity -> new Link(linkEntity.getId(), linkEntity.getUrl(), linkEntity.getLastCheckedTime()))
+            .toList();
+    }
 }

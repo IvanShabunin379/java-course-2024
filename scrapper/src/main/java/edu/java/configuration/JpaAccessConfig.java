@@ -24,8 +24,9 @@ public class JpaAccessConfig {
 
     @Bean
     public TgChatsService tgChatsService(
-        JpaTgChatsRepository tgChatsRepository
+        JpaTgChatsRepository tgChatsRepository,
+        JpaLinksRepository linksRepository
     ) {
-        return new JpaTgChatsService(tgChatsRepository);
+        return new JpaTgChatsService(tgChatsRepository, linksRepository);
     }
 }

@@ -1,18 +1,33 @@
 package edu.java.service.jdbc;
 
+import edu.java.domain.model.jdbc.Link;
+import edu.java.domain.model.jdbc.TgChat;
+import edu.java.domain.repository.jdbc.JdbcLinksRepository;
+import edu.java.domain.repository.jdbc.JdbcLinksTrackingsRepository;
 import edu.java.domain.repository.jdbc.JdbcTgChatsRepository;
+import edu.java.service.TgChatsService;
+import edu.java.exceptions.LinkNotFoundException;
 import edu.java.exceptions.TgChatAlreadyExistsException;
 import edu.java.exceptions.TgChatNotFoundException;
-import edu.java.service.TgChatsService;
+import java.net.URI;
+import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class JdbcTgChatsService implements TgChatsService {
     private final JdbcTgChatsRepository tgChatsRepository;
+    private final JdbcLinksRepository linksRepository;
+    private final JdbcLinksTrackingsRepository linksTrackingsRepository;
 
-    public JdbcTgChatsService(JdbcTgChatsRepository tgChatsRepository) {
+    public JdbcTgChatsService(
+        JdbcTgChatsRepository tgChatsRepository,
+        JdbcLinksRepository linksRepository,
+        JdbcLinksTrackingsRepository linksTrackingsRepository
+    ) {
         this.tgChatsRepository = tgChatsRepository;
+        this.linksRepository = linksRepository;
+        this.linksTrackingsRepository = linksTrackingsRepository;
     }
 
     @Override
@@ -29,5 +44,13 @@ public class JdbcTgChatsService implements TgChatsService {
         if (!tgChatsRepository.remove(tgChatId)) {
             throw new TgChatNotFoundException();
         }
+    }
+
+    @Override
+    public List<TgChat> listAll(URI linkUri) {
+        Link link = linksRepository.findByUrl(linkUri)
+            .orElseThrow(LinkNotFoundException::new);
+
+        return linksTrackingsRepository.findAllTgChatsByLink(link.id());
     }
 }

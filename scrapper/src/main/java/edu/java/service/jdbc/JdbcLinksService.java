@@ -6,11 +6,11 @@ import edu.java.domain.model.jdbc.TgChat;
 import edu.java.domain.repository.jdbc.JdbcLinksRepository;
 import edu.java.domain.repository.jdbc.JdbcLinksTrackingsRepository;
 import edu.java.domain.repository.jdbc.JdbcTgChatsRepository;
+import edu.java.service.LinksService;
 import edu.java.exceptions.LinkInChatAlreadyExistsException;
 import edu.java.exceptions.LinkInChatNotFoundException;
 import edu.java.exceptions.LinkNotFoundException;
 import edu.java.exceptions.TgChatNotFoundException;
-import edu.java.service.LinksService;
 import java.net.URI;
 import java.util.List;
 import org.springframework.dao.DataAccessException;
@@ -18,17 +18,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class JdbcLinksService implements LinksService {
-    private final JdbcTgChatsRepository tgChatsRepository;
     private final JdbcLinksRepository linksRepository;
+    private final JdbcTgChatsRepository tgChatsRepository;
     private final JdbcLinksTrackingsRepository linksTrackingsRepository;
 
     public JdbcLinksService(
-        JdbcTgChatsRepository tgChatsRepository,
         JdbcLinksRepository linksRepository,
+        JdbcTgChatsRepository tgChatsRepository,
         JdbcLinksTrackingsRepository linksTrackingsRepository
     ) {
-        this.tgChatsRepository = tgChatsRepository;
         this.linksRepository = linksRepository;
+        this.tgChatsRepository = tgChatsRepository;
         this.linksTrackingsRepository = linksTrackingsRepository;
     }
 
@@ -72,5 +72,10 @@ public class JdbcLinksService implements LinksService {
         TgChat chat = tgChatsRepository.findById(tgChatId)
             .orElseThrow(TgChatNotFoundException::new);
         return linksTrackingsRepository.findAllLinksByTgChat(tgChatId);
+    }
+
+    @Override
+    public List<Link> findUncheckedLinksForLongestTime(int limit) {
+        return linksRepository.findUncheckedLinksForLongestTime(limit);
     }
 }
