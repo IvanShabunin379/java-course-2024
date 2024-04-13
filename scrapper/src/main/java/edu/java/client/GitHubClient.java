@@ -28,8 +28,8 @@ public class GitHubClient {
             .retrieve()
             .bodyToFlux(GitHubResponse.class)
             .filter(response ->
-                response.timestamp().isAfter(fromTimestamp) &&
-                    (response.timestamp().isBefore(toTimestamp) || response.timestamp().isEqual(toTimestamp)))
+                response.timestamp().isAfter(fromTimestamp)
+                    && (response.timestamp().isBefore(toTimestamp) || response.timestamp().isEqual(toTimestamp)))
             .switchIfEmpty(Flux.empty())
             .collectList()
             .block();
