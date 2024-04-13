@@ -20,16 +20,18 @@ public class GitHubClient {
     }
 
     public List<GitHubResponse> getRepositoryUpdates(
-            @NotNull String owner, @NotNull String repository,
-            @NotNull OffsetDateTime fromTimestamp
+        @NotNull String owner, @NotNull String repository,
+        @NotNull OffsetDateTime fromTimestamp, @NotNull OffsetDateTime toTimestamp
     ) {
         return webClient.get()
-                .uri(uriBuilder -> uriBuilder.path("repos/{owner}/{repo}/activity").build(owner, repository))
-                .retrieve()
-                .bodyToFlux(GitHubResponse.class)
-                .filter(response -> response.timestamp().isAfter(fromTimestamp))
-                .switchIfEmpty(Flux.empty())
-                .collectList()
-                .block();
+            .uri(uriBuilder -> uriBuilder.path("repos/{owner}/{repo}/activity").build(owner, repository))
+            .retrieve()
+            .bodyToFlux(GitHubResponse.class)
+            .filter(response ->
+                response.timestamp().isAfter(fromTimestamp) &&
+                    (response.timestamp().isBefore(toTimestamp) || response.timestamp().isEqual(toTimestamp)))
+            .switchIfEmpty(Flux.empty())
+            .collectList()
+            .block();
     }
 }
