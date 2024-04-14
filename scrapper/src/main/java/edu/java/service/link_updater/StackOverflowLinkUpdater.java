@@ -13,14 +13,13 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 import org.springframework.stereotype.Service;
+
+import static edu.java.utils.LinkTypeChecker.LinkValidator.STACK_OVERFLOW_QUESTION_URL_PATTERN;
 
 @Service
 public class StackOverflowLinkUpdater implements LinkUpdater<StackOverflowAnswerInfo> {
-    private static final Pattern STACK_OVERFLOW_QUESTION_URL_PATTERN =
-        Pattern.compile("https://stackoverflow.com/questions/(\\d+)");
-
     private final StackOverflowClient stackOverflowClient;
     private final BotClient botClient;
     private final LinksService linksService;
