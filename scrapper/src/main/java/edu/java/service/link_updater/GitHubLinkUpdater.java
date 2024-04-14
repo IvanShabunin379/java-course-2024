@@ -13,8 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.regex.Matcher;
 import org.springframework.stereotype.Service;
-
-import static edu.java.utils.LinkTypeChecker.LinkValidator.GIT_HUB_REPO_URL_PATTERN;
+import static edu.java.utils.LinkTypeChecker.GIT_HUB_REPO_URL_PATTERN;
 
 @Service
 public class GitHubLinkUpdater implements LinkUpdater<GitHubResponse> {
@@ -24,10 +23,10 @@ public class GitHubLinkUpdater implements LinkUpdater<GitHubResponse> {
     private final TgChatsService tgChatsService;
 
     public GitHubLinkUpdater(
-        GitHubClient gitHubClient,
-        BotClient botClient,
-        LinksService linksService,
-        TgChatsService tgChatsService
+            GitHubClient gitHubClient,
+            BotClient botClient,
+            LinksService linksService,
+            TgChatsService tgChatsService
     ) {
         this.gitHubClient = gitHubClient;
         this.botClient = botClient;
@@ -41,12 +40,12 @@ public class GitHubLinkUpdater implements LinkUpdater<GitHubResponse> {
 
         OffsetDateTime currentTimestamp = OffsetDateTime.now();
         List<GitHubResponse> responses =
-            gitHubClient.getRepositoryUpdates(
-                repoInfo.owner(),
-                repoInfo.repoName(),
-                link.lastCheckTime(),
-                currentTimestamp
-            );
+                gitHubClient.getRepositoryUpdates(
+                        repoInfo.owner(),
+                        repoInfo.repoName(),
+                        link.lastCheckTime(),
+                        currentTimestamp
+                );
         linksService.updateLastCheckTime(link.id(), currentTimestamp);
 
         return responses;
@@ -56,19 +55,19 @@ public class GitHubLinkUpdater implements LinkUpdater<GitHubResponse> {
     public void sendUpdatesToBot(Link link, List<GitHubResponse> updates) {
         for (var update : updates) {
             List<Long> tgChatsIds = tgChatsService.listAll(link.url()).stream()
-                .map(TgChat::id)
-                .toList();
+                    .map(TgChat::id)
+                    .toList();
 
             LinkUpdateRequest linkUpdateRequest = new LinkUpdateRequest(
-                link.id(),
-                link.url(),
-                String.format(
-                    "Новый %s в репозитории %s.\n%s",
-                    update.activityType(),
+                    link.id(),
                     link.url(),
-                    update.timestamp().toString()
-                ),
-                tgChatsIds
+                    String.format(
+                            "Новый %s в репозитории %s.\n%s",
+                            update.activityType(),
+                            link.url(),
+                            update.timestamp().toString()
+                    ),
+                    tgChatsIds
             );
 
             botClient.sendLinkUpdate(linkUpdateRequest);
