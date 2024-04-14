@@ -45,7 +45,8 @@ public class GitHubClientTest extends AbstractClientTest {
         List<GitHubResponse> responses = githubClient.getRepositoryUpdates(
             "owner",
             "repository",
-            OffsetDateTime.of(2024, 3, 7, 20, 5, 0, 0, ZoneOffset.UTC)
+            OffsetDateTime.of(2024, 3, 7, 20, 5, 0, 0, ZoneOffset.UTC),
+            OffsetDateTime.now()
         );
 
         assertThat(responses).hasSize(2);

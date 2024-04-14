@@ -45,7 +45,8 @@ public class StackOverflowClientTest extends AbstractClientTest {
 
         StackOverflowResponse response = stackOverflowClient.getQuestionUpdates(
             1L,
-            OffsetDateTime.of(2024, 3, 7, 8, 0, 0, 0, ZoneOffset.UTC)
+            OffsetDateTime.of(2024, 3, 7, 8, 0, 0, 0, ZoneOffset.UTC),
+            OffsetDateTime.now()
         );
         List<StackOverflowAnswerInfo> items = response.items();
 
