@@ -6,20 +6,17 @@ import edu.java.domain.model.Link;
 import edu.java.domain.model.TgChat;
 import edu.java.dto.LinkUpdateRequest;
 import edu.java.responses.GitHubResponse;
+import edu.java.service.LinksService;
+import edu.java.service.TgChatsService;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import edu.java.service.LinksService;
-import edu.java.service.TgChatsService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GitHubLinkUpdater implements LinkUpdater<GitHubResponse> {
-    private record RepoInfo(String owner, String repoName) {
-    }
-
     private static final Pattern GIT_HUB_REPO_URL_PATTERN = Pattern.compile("https://github.com/(\\w+)/(\\w+)");
 
     private final GitHubClient gitHubClient;
@@ -83,6 +80,9 @@ public class GitHubLinkUpdater implements LinkUpdater<GitHubResponse> {
         Matcher matcher = GIT_HUB_REPO_URL_PATTERN.matcher(url.toString());
         matcher.find();
         return new RepoInfo(matcher.group(1), matcher.group(2));
+    }
+
+    private record RepoInfo(String owner, String repoName) {
     }
 }
 
