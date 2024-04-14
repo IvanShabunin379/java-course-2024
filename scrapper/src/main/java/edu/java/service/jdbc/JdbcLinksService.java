@@ -12,6 +12,7 @@ import edu.java.exceptions.LinkNotFoundException;
 import edu.java.exceptions.TgChatNotFoundException;
 import edu.java.service.LinksService;
 import java.net.URI;
+import java.time.OffsetDateTime;
 import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -68,6 +69,14 @@ public class JdbcLinksService implements LinksService {
         return link;
     }
 
+    @Override
+    public void updateLastCheckTime(long id, OffsetDateTime lastCheckTime) {
+        Link link = linksRepository.findById(id)
+            .orElseThrow(LinkNotFoundException::new);
+
+        linksRepository.update(id, new Link(link.id(), link.url(), lastCheckTime));
+    }
+
     @Transactional(readOnly = true)
     @Override
     public List<Link> listAll(long tgChatId) {
@@ -75,6 +84,8 @@ public class JdbcLinksService implements LinksService {
             .orElseThrow(TgChatNotFoundException::new);
         return linksTrackingsRepository.findAllLinksByTgChat(tgChatId);
     }
+
+
 
     @Override
     public List<Link> findUncheckedLinksForLongestTime(int limit) {

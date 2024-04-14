@@ -39,6 +39,16 @@ public class JdbcLinksRepository {
         return jdbcTemplate.query("SELECT * FROM links", new BeanPropertyRowMapper<>(Link.class));
     }
 
+    public boolean update(long id, Link updatedLink) {
+        return jdbcTemplate.update(
+            "UPDATE links SET id = ?, url = ?, lastCheckTime = ? WHERE id = ?",
+            updatedLink.id(),
+            updatedLink.url(),
+            updatedLink.lastCheckTime(),
+            id
+        ) == 1;
+    }
+
     public List<Link> findUncheckedLinksForLongestTime(int limit) {
         return jdbcTemplate.query(
             "SELECT * FROM links ORDER BY last_checked_time ASC LIMIT ?",
