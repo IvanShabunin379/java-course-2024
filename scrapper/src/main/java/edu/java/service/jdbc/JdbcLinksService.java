@@ -74,7 +74,7 @@ public class JdbcLinksService implements LinksService {
         Link link = linksRepository.findById(id)
             .orElseThrow(LinkNotFoundException::new);
 
-        linksRepository.update(id, new Link(link.id(), link.url(), lastCheckTime));
+        linksRepository.update(new Link(link.id(), link.url(), lastCheckTime));
     }
 
     @Transactional(readOnly = true)
