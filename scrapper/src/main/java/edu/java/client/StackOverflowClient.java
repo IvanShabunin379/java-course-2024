@@ -23,12 +23,17 @@ public class StackOverflowClient {
         return Mono.empty();
     }
 
-    public StackOverflowResponse getQuestionUpdates(long questionId, @NotNull OffsetDateTime fromTimestamp) {
+    public StackOverflowResponse getQuestionUpdates(
+        long questionId,
+        @NotNull OffsetDateTime fromTimestamp,
+        @NotNull OffsetDateTime toTimestamp
+    ) {
         return webClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path("questions/{ids}/answers")
                 .queryParam("site", "stackoverflow")
                 .queryParam("fromdate", fromTimestamp.toEpochSecond())
+                .queryParam("todate", toTimestamp.toEpochSecond())
                 .build(questionId))
             .retrieve()
             .bodyToMono(StackOverflowResponse.class)

@@ -1,6 +1,7 @@
 package edu.java.scrapper.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
+import edu.java.AbstractClientTest;
 import edu.java.client.GitHubClient;
 import edu.java.responses.GitHubResponse;
 import lombok.SneakyThrows;
@@ -45,7 +46,8 @@ public class GitHubClientTest extends AbstractClientTest {
         List<GitHubResponse> responses = githubClient.getRepositoryUpdates(
             "owner",
             "repository",
-            OffsetDateTime.of(2024, 3, 7, 20, 5, 0, 0, ZoneOffset.UTC)
+            OffsetDateTime.of(2024, 3, 7, 20, 5, 0, 0, ZoneOffset.UTC),
+            OffsetDateTime.now()
         );
 
         assertThat(responses).hasSize(2);

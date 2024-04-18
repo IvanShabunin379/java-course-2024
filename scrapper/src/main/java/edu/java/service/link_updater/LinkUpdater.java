@@ -1,20 +1,10 @@
 package edu.java.service.link_updater;
 
-/*
-    * Interface for updating links
-    Текущее приложение умеет добавлять, удалять и показывать список ссылок, но ничего не делает для поиска и оповещения.
+import edu.java.domain.model.jdbc.Link;
+import java.util.List;
 
-    В одном из предыдущих заданий мы сделали простой планировщик, который раз в N секунд выводит запись в консоль.
+public interface LinkUpdater<T> {
+    List<T> getUpdatesForLink(Link link);
 
-    Расширьте функционал планировщика:
-
-    - в БД ищется список ссылок, которые давно не проверялись
-    - при помощи GithubClient/StackOverFlowClient проверялись обновления устаревших ссылок
-    - если обновления есть, то вызывается BotClient и уведомление об обновлении уходит в приложение bot
-    - если обновления нет, то в БД обновляется дата последней проверки
-
-    Важно: планировщик должен использовать для работы интерфейсы, т.е. сущности без префикса Jdbc*.
- */
-public interface LinkUpdater {
-    int update();
+    void sendUpdatesToBot(Link link, List<T> updates);
 }

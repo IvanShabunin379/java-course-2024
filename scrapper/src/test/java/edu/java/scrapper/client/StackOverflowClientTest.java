@@ -1,6 +1,7 @@
 package edu.java.scrapper.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
+import edu.java.AbstractClientTest;
 import edu.java.client.StackOverflowClient;
 import edu.java.responses.StackOverflowResponse;
 import edu.java.responses.StackOverflowResponse.StackOverflowAnswerInfo;
@@ -45,7 +46,8 @@ public class StackOverflowClientTest extends AbstractClientTest {
 
         StackOverflowResponse response = stackOverflowClient.getQuestionUpdates(
             1L,
-            OffsetDateTime.of(2024, 3, 7, 8, 0, 0, 0, ZoneOffset.UTC)
+            OffsetDateTime.of(2024, 3, 7, 8, 0, 0, 0, ZoneOffset.UTC),
+            OffsetDateTime.now()
         );
         List<StackOverflowAnswerInfo> items = response.items();
 
