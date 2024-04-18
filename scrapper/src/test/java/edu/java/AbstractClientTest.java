@@ -1,4 +1,4 @@
-package edu.java.scrapper.client;
+package edu.java;
 
 import lombok.SneakyThrows;
 import java.nio.charset.StandardCharsets;

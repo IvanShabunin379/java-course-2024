@@ -1,6 +1,7 @@
 package edu.java.scrapper.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
+import edu.java.AbstractClientTest;
 import edu.java.client.StackOverflowClient;
 import edu.java.responses.StackOverflowResponse;
 import edu.java.responses.StackOverflowResponse.StackOverflowAnswerInfo;

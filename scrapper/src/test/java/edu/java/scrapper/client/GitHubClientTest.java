@@ -1,6 +1,7 @@
 package edu.java.scrapper.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
+import edu.java.AbstractClientTest;
 import edu.java.client.GitHubClient;
 import edu.java.responses.GitHubResponse;
 import lombok.SneakyThrows;
