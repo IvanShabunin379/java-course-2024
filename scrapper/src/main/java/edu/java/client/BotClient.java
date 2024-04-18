@@ -1,6 +1,8 @@
 package edu.java.client;
 
 import edu.java.dto.LinkUpdateRequest;
+import edu.java.utils.ApiErrorHandler;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class BotClient {
@@ -20,6 +22,7 @@ public class BotClient {
             .uri("/updates")
             .bodyValue(linkUpdateRequest)
             .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError, ApiErrorHandler::handleApiError)
             .toBodilessEntity()
             .block();
     }
