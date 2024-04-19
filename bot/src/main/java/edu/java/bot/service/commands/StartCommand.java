@@ -42,7 +42,7 @@ public class StartCommand implements Command {
             String helloMessage = "Здравствуйте, " + userName + "! ";
             return new SendMessage(String.valueOf(chatId), helloMessage + START_MESSAGE);
         } catch (WebClientResponseException e) {
-            return new SendMessage(String.valueOf(chatId), userName + USER_ALREADY_REGISTERED_MESSAGE);
+            return new SendMessage(String.valueOf(chatId), userName + ", " + USER_ALREADY_REGISTERED_MESSAGE);
         }
     }
 }
