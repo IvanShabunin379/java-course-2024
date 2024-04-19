@@ -75,6 +75,16 @@ public class JpaLinksService implements LinksService {
     }
 
     @Override
+    public void updateLastCheckTime(long id, OffsetDateTime lastCheckTime) {
+        LinkEntity link = linksRepository.findById(id)
+            .orElseThrow(LinkNotFoundException::new);
+
+        link.setLastCheckedTime(lastCheckTime);
+
+        linksRepository.save(link);
+    }
+
+    @Override
     public List<Link> listAll(long tgChatId) {
         TgChatEntity tgChat = tgChatsRepository.findById(tgChatId)
             .orElseThrow(TgChatNotFoundException::new);
