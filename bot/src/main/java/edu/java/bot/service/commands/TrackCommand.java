@@ -61,16 +61,19 @@ public class TrackCommand implements Command {
             scrapperClient.trackLink(chatId, new AddLinkRequest(potentialTrackedLink));
             return new SendMessage(String.valueOf(chatId), "Ссылка " + potentialTrackedLink + " теперь отслеживается.");
         } catch (ClientResponseException e) {
+            String exceptionMessage;
             String exceptionReasonName = e.getApiErrorResponse().exceptionName();
 
             if (exceptionReasonName.equals("TgChatNotFoundException")) {
-                return new SendMessage(String.valueOf(chatId), USER_NOT_REGISTERED_MESSAGE);
+                exceptionMessage = USER_NOT_REGISTERED_MESSAGE;
             } else if (exceptionReasonName.equals("LinkInChatAlreadyExistsException")) {
-                return new SendMessage(String.valueOf(chatId), LINK_ALREADY_TRACK_MESSAGE);
+                exceptionMessage = LINK_ALREADY_TRACK_MESSAGE;
             } else {
                 log.error("Error: {}", e.getApiErrorResponse().description());
-                return new SendMessage(String.valueOf(chatId), UNEXPECTED_ERROR_MESSAGE);
+                exceptionMessage = UNEXPECTED_ERROR_MESSAGE;
             }
+
+            return new SendMessage(String.valueOf(chatId), exceptionMessage);
         }
     }
 

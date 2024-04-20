@@ -3,10 +3,9 @@ package edu.java.bot.service.commands;
 import edu.java.bot.client.ScrapperClient;
 import edu.java.dto.LinkResponse;
 import edu.java.dto.ListLinksResponse;
-import java.util.List;
 import edu.java.exceptions.ClientResponseException;
+import java.util.List;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
