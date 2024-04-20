@@ -13,7 +13,7 @@ public class LinkTypeChecker {
     public enum LinkType {
         STACKOVERFLOW_QUESTION,
         GITHUB_REPOSITORY,
-        UNSUPPORTED
+        UNKNOWN
     }
 
     public static LinkType checkLinkType(URI link) {
@@ -22,7 +22,7 @@ public class LinkTypeChecker {
         } else if (GIT_HUB_REPO_URL_PATTERN.matcher(link.toString()).find()) {
             return LinkType.GITHUB_REPOSITORY;
         } else {
-            return LinkType.UNSUPPORTED;
+            return LinkType.UNKNOWN;
         }
     }
 }

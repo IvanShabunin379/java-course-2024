@@ -1,12 +1,29 @@
 package edu.java.bot.service.commands;
 
+import edu.java.bot.client.ScrapperClient;
+import edu.java.dto.LinkResponse;
+import edu.java.dto.ListLinksResponse;
+import java.util.List;
+import edu.java.exceptions.ClientResponseException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
 public class ListCommand implements Command {
-    private static final String EMPTY_LIST_MESSAGE = "Список отслеживаемых ссылок пуст.";
+    private static final String EMPTY_LIST_MESSAGE = "Список отслеживаемых Вами ссылок пуст.";
+    private static final String USER_NOT_REGISTERED_MESSAGE = """
+        Извините, я не могу выполнить данную команду, так как Вы ещё не зарегистрированы.
+
+        Для начала работы с ботом необходимо вызвать команду /start.
+        """;
+
+    private final ScrapperClient scrapperClient;
+
+    public ListCommand(ScrapperClient scrapperClient) {
+        this.scrapperClient = scrapperClient;
+    }
 
     @Override
     public String name() {
@@ -18,9 +35,27 @@ public class ListCommand implements Command {
         return "показать список отслеживаемых ссылок";
     }
 
-    // Добавить вывод списка ссылок, если список не пуст.
     @Override
     public SendMessage handle(Update update) {
-        return new SendMessage(String.valueOf(update.getMessage().getChat().getId()), EMPTY_LIST_MESSAGE);
+        long chatId = update.getMessage().getChatId();
+
+        try {
+            ListLinksResponse listLinksResponse = scrapperClient.getLinks(chatId);
+            List<LinkResponse> links = listLinksResponse.links();
+
+            if (links == null || listLinksResponse.size() == 0) {
+                return new SendMessage(String.valueOf(chatId), EMPTY_LIST_MESSAGE);
+            }
+
+            StringBuilder linksListMessage = new StringBuilder("Отслеживаемые Вами ссылки:");
+            List<String> urls = links.stream()
+                .map(link -> link.url().toString())
+                .toList();
+            linksListMessage.append(String.join("\n\n", urls));
+
+            return new SendMessage(String.valueOf(chatId), linksListMessage.toString());
+        } catch (ClientResponseException e) {
+            return new SendMessage(String.valueOf(chatId), USER_NOT_REGISTERED_MESSAGE);
+        }
     }
 }

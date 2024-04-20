@@ -1,11 +1,40 @@
 package edu.java.bot.service.commands;
 
+import edu.java.bot.client.ScrapperClient;
+import edu.java.dto.AddLinkRequest;
+import edu.java.exceptions.ClientResponseException;
+import edu.java.utils.LinkTypeChecker;
+import java.net.URI;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import static edu.java.utils.LinkTypeChecker.LinkType;
+import static edu.java.utils.LinkTypeChecker.checkLinkType;
 
+@Slf4j
 @Component
 public class UntrackCommand implements Command {
+    private static final String UNKNOWN_LINK_TYPE_MESSAGE = """
+        Бот не может распознать ссылку, которую Вы попытались прекратить отслеживать.
+
+        На данный момент отслеживание поддерживается только для вопросов со StackOverflow и репозиториев GitHub.
+        Вводите ссылку, которую Вы хотите прекратить отслеживать, строго через один пробел после команды /untrack.
+        """;
+    private static final String USER_NOT_REGISTERED_MESSAGE = """
+        Извините, я не могу выполнить данную команду, так как Вы ещё не зарегистрированы.
+
+        Для начала работы с ботом необходимо вызвать команду /start.
+        """;
+    private static final String LINK_ALREADY_UNTRACK_MESSAGE = "Данная ссылка отсутствует в списке отслеживаемых.";
+    private static final String UNEXPECTED_ERROR_MESSAGE = "Прошу прощения, произошла непредвиденная ошибка!";
+
+    private final ScrapperClient scrapperClient;
+
+    public UntrackCommand(ScrapperClient scrapperClient) {
+        this.scrapperClient = scrapperClient;
+    }
+
     @Override
     public String name() {
         return "/untrack";
@@ -18,14 +47,42 @@ public class UntrackCommand implements Command {
 
     @Override
     public SendMessage handle(Update update) {
-        return new SendMessage(
-            String.valueOf(update.getMessage().getChat().getId()),
-            "Данная команда ещё не реализована!"
-        );
+        long chatId = update.getMessage().getChatId();
+        String messageText = update.getMessage().getText();
 
-        // 1. Распознать ссылку;
-        // 2. Вывести сообщение, если ссылки нет или ссылка некорректна;
-        // 3. Удалить ссылку из списка отслеживаемых ссылок, если список содержит данную ссылку;
-        // 4. Иначе (если в списке такой ссылки нет) вывести соотв. сообщение.
+        URI potentialUntrackedLink = URI.create(messageText.substring(name().length() + 1, messageText.length() - 1));
+        LinkType typeOfPotentialNewLink = checkLinkType(potentialUntrackedLink);
+
+        if (typeOfPotentialNewLink.equals(LinkTypeChecker.LinkType.UNKNOWN)) {
+            return new SendMessage(String.valueOf(chatId), UNKNOWN_LINK_TYPE_MESSAGE);
+        }
+
+        try {
+            scrapperClient.trackLink(chatId, new AddLinkRequest(potentialUntrackedLink));
+            return new SendMessage(
+                String.valueOf(chatId),
+                "Ссылка " + potentialUntrackedLink + " больше не отслеживается."
+            );
+        } catch (ClientResponseException e) {
+            String exceptionReasonName = e.getApiErrorResponse().exceptionName();
+
+            if (exceptionReasonName.equals("TgChatNotFoundException")) {
+                return new SendMessage(String.valueOf(chatId), USER_NOT_REGISTERED_MESSAGE);
+            } else if (exceptionReasonName.equals("LinkInChatNotFoundException")) {
+                return new SendMessage(String.valueOf(chatId), LINK_ALREADY_UNTRACK_MESSAGE);
+            } else {
+                log.error("Error: {}", e.getApiErrorResponse().description());
+                return new SendMessage(String.valueOf(chatId), UNEXPECTED_ERROR_MESSAGE);
+            }
+        }
+    }
+
+    @Override
+    public boolean supports(Update update) {
+        String messageText = update.getMessage().getText();
+
+        int trackCommandNameLength = name().length();
+        return (messageText.length() > trackCommandNameLength)
+            && (messageText.substring(0, trackCommandNameLength).equals(name() + " "));
     }
 }
