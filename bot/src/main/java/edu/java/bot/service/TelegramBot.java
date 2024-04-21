@@ -2,6 +2,7 @@ package edu.java.bot.service;
 
 import edu.java.bot.configuration.BotConfig;
 import edu.java.bot.service.commands.Command;
+import java.net.URI;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -62,5 +63,16 @@ public class TelegramBot extends TelegramLongPollingBot {
                 log.error("Error occurred " + e.getMessage(), e);
             }
         }
+    }
+
+    public void sendLinkUpdate(String description, List<Long> tgChatIds) {
+        tgChatIds.forEach(chatId -> {
+            try {
+                SendMessage linkUpdate = new SendMessage(String.valueOf(chatId), description);
+                execute(linkUpdate);
+            } catch (TelegramApiException e) {
+                log.error("Error occurred " + e.getMessage(), e);
+            }
+        });
     }
 }
