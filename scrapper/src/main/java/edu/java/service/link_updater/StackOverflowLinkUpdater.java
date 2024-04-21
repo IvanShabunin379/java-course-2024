@@ -13,27 +13,17 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.regex.Matcher;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import static edu.java.utils.LinkTypeChecker.STACK_OVERFLOW_QUESTION_URL_PATTERN;
 
 @Service
+@RequiredArgsConstructor
 public class StackOverflowLinkUpdater implements LinkUpdater<StackOverflowAnswerInfo> {
     private final StackOverflowClient stackOverflowClient;
     private final BotClient botClient;
     private final LinksService linksService;
     private final TgChatsService tgChatsService;
-
-    public StackOverflowLinkUpdater(
-            StackOverflowClient stackOverflowClient,
-            BotClient botClient,
-            LinksService linksService,
-            TgChatsService tgChatsService
-    ) {
-        this.stackOverflowClient = stackOverflowClient;
-        this.botClient = botClient;
-        this.linksService = linksService;
-        this.tgChatsService = tgChatsService;
-    }
 
     @Override
     public List<StackOverflowAnswerInfo> getUpdatesForLink(Link link) {

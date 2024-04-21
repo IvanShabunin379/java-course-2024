@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.constraints.Positive;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/tg-chat")
 @Validated
 @Slf4j
+@RequiredArgsConstructor
 @ApiResponses({
     @ApiResponse(
         responseCode = "400",
@@ -31,10 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 })
 public class TgChatController {
     private final TgChatsService tgChatsService;
-
-    public TgChatController(TgChatsService tgChatsService) {
-        this.tgChatsService = tgChatsService;
-    }
 
     @Operation(summary = "Зарегистрировать чат")
     @ApiResponses({
