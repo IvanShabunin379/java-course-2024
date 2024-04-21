@@ -14,26 +14,17 @@ import edu.java.service.LinksService;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
+@RequiredArgsConstructor
 public class JdbcLinksService implements LinksService {
     private final JdbcLinksRepository linksRepository;
     private final JdbcTgChatsRepository tgChatsRepository;
     private final JdbcLinksTrackingsRepository linksTrackingsRepository;
 
-    public JdbcLinksService(
-        JdbcLinksRepository linksRepository,
-        JdbcTgChatsRepository tgChatsRepository,
-        JdbcLinksTrackingsRepository linksTrackingsRepository
-    ) {
-        this.linksRepository = linksRepository;
-        this.tgChatsRepository = tgChatsRepository;
-        this.linksTrackingsRepository = linksTrackingsRepository;
-    }
-
-    @Transactional
     @Override
     public Link add(long tgChatId, URI url) {
         TgChat chat = tgChatsRepository.findById(tgChatId).orElseThrow(TgChatNotFoundException::new);
@@ -50,7 +41,6 @@ public class JdbcLinksService implements LinksService {
         return link;
     }
 
-    @Transactional
     @Override
     public Link remove(long tgChatId, URI url) {
         TgChat chat = tgChatsRepository.findById(tgChatId).orElseThrow(TgChatNotFoundException::new);
@@ -83,8 +73,7 @@ public class JdbcLinksService implements LinksService {
         return linksTrackingsRepository.findAllLinksByTgChat(tgChatId);
     }
 
-
-
+    @Transactional(readOnly = true)
     @Override
     public List<Link> findUncheckedLinksForLongestTime(int limit) {
         return linksRepository.findUncheckedLinksForLongestTime(limit);

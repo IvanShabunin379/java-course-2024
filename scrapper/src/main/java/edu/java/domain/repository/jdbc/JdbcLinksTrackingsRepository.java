@@ -3,21 +3,16 @@ package edu.java.domain.repository.jdbc;
 import edu.java.domain.model.jdbc.Link;
 import edu.java.domain.model.jdbc.LinkTracking;
 import edu.java.domain.model.jdbc.TgChat;
-import edu.java.domain.repository.LinksTrackingsRepository;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JdbcLinksTrackingsRepository implements LinksTrackingsRepository {
+@RequiredArgsConstructor
+public class JdbcLinksTrackingsRepository {
     private final JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    public JdbcLinksTrackingsRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     public void add(LinkTracking linkTracking) {
         String sql = """

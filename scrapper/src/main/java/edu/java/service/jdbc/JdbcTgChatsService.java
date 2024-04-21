@@ -11,24 +11,16 @@ import edu.java.exceptions.TgChatNotFoundException;
 import edu.java.service.TgChatsService;
 import java.net.URI;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
+@RequiredArgsConstructor
 public class JdbcTgChatsService implements TgChatsService {
     private final JdbcTgChatsRepository tgChatsRepository;
     private final JdbcLinksRepository linksRepository;
     private final JdbcLinksTrackingsRepository linksTrackingsRepository;
-
-    public JdbcTgChatsService(
-        JdbcTgChatsRepository tgChatsRepository,
-        JdbcLinksRepository linksRepository,
-        JdbcLinksTrackingsRepository linksTrackingsRepository
-    ) {
-        this.tgChatsRepository = tgChatsRepository;
-        this.linksRepository = linksRepository;
-        this.linksTrackingsRepository = linksTrackingsRepository;
-    }
 
     @Override
     public void register(long tgChatId) {
@@ -46,6 +38,7 @@ public class JdbcTgChatsService implements TgChatsService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<TgChat> listAll(URI linkUri) {
         Link link = linksRepository.findByUrl(linkUri)

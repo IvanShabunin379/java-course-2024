@@ -12,27 +12,17 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.regex.Matcher;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import static edu.java.utils.LinkTypeChecker.GIT_HUB_REPO_URL_PATTERN;
 
 @Service
+@RequiredArgsConstructor
 public class GitHubLinkUpdater implements LinkUpdater<GitHubResponse> {
     private final GitHubClient gitHubClient;
     private final BotClient botClient;
     private final LinksService linksService;
     private final TgChatsService tgChatsService;
-
-    public GitHubLinkUpdater(
-            GitHubClient gitHubClient,
-            BotClient botClient,
-            LinksService linksService,
-            TgChatsService tgChatsService
-    ) {
-        this.gitHubClient = gitHubClient;
-        this.botClient = botClient;
-        this.linksService = linksService;
-        this.tgChatsService = tgChatsService;
-    }
 
     @Override
     public List<GitHubResponse> getUpdatesForLink(Link link) {
