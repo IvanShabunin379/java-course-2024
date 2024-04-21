@@ -12,17 +12,15 @@ import edu.java.service.TgChatsService;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
+@RequiredArgsConstructor
 public class JpaTgChatsService implements TgChatsService {
     private final JpaTgChatsRepository tgChatsRepository;
     private final JpaLinksRepository linksRepository;
-
-    public JpaTgChatsService(JpaTgChatsRepository tgChatsRepository, JpaLinksRepository linksRepository) {
-        this.tgChatsRepository = tgChatsRepository;
-        this.linksRepository = linksRepository;
-    }
 
     @Override
     public void register(long tgChatId) {

@@ -11,20 +11,18 @@ import edu.java.exceptions.LinkNotFoundException;
 import edu.java.exceptions.TgChatNotFoundException;
 import edu.java.service.LinksService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 @Transactional
+@RequiredArgsConstructor
 public class JpaLinksService implements LinksService {
     private final JpaLinksRepository linksRepository;
 
     private final JpaTgChatsRepository tgChatsRepository;
-
-    public JpaLinksService(JpaLinksRepository linksRepository, JpaTgChatsRepository tgChatsRepository) {
-        this.linksRepository = linksRepository;
-        this.tgChatsRepository = tgChatsRepository;
-    }
 
     @Override
     public Link add(long tgChatId, URI url) {
