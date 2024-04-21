@@ -2,14 +2,13 @@ package edu.java.utils;
 
 import edu.java.dto.ApiErrorResponse;
 import java.util.Arrays;
+import lombok.experimental.UtilityClass;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public final class ControllerAdviceUtils {
-    private ControllerAdviceUtils() {
-    }
-
-    public static ResponseEntity<ApiErrorResponse> handleException(
+@UtilityClass
+public class ControllerAdviceUtils {
+    public ResponseEntity<ApiErrorResponse> handleException(
         Exception e,
         HttpStatus httpStatus,
         String description

@@ -3,20 +3,16 @@ package edu.java.domain.repository.jdbc;
 import edu.java.domain.model.TgChat;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@RequiredArgsConstructor
 public class JdbcTgChatsRepository {
     private final JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    public JdbcTgChatsRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     public void add(long id) {
         String sql = """

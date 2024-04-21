@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/links")
 @Validated
 @Slf4j
+@RequiredArgsConstructor
 @ApiResponses({
     @ApiResponse(
         responseCode = "400",
@@ -40,10 +42,6 @@ import org.springframework.web.bind.annotation.RestController;
 })
 public class LinksController {
     private final LinksService linksService;
-
-    public LinksController(LinksService linksService) {
-        this.linksService = linksService;
-    }
 
     @Operation(summary = "Получить все отслеживаемые ссылки")
     @ApiResponses({
