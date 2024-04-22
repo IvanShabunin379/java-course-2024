@@ -7,8 +7,8 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class LinkTypeChecker {
     public static final Pattern STACK_OVERFLOW_QUESTION_URL_PATTERN =
-        Pattern.compile("https://stackoverflow.com/questions/(\\d+)");
-    public static final Pattern GIT_HUB_REPO_URL_PATTERN = Pattern.compile("https://github.com/(\\w+)/(\\w+)");
+        Pattern.compile("^https://stackoverflow.com/questions/(\\d+)$");
+    public static final Pattern GIT_HUB_REPO_URL_PATTERN = Pattern.compile("^https://github.com/(\\S+)/(\\S+)$");
 
     public enum LinkType {
         STACKOVERFLOW_QUESTION,
