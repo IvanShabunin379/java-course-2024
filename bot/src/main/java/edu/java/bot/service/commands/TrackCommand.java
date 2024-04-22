@@ -28,6 +28,9 @@ public class TrackCommand implements Command {
         """;
     private static final String LINK_ALREADY_TRACK_MESSAGE = "Данная ссылка отслеживается";
     private static final String UNEXPECTED_ERROR_MESSAGE = "Прошу прощения, произошла непредвиденная ошибка!";
+    private static final String ONLY_COMMAND_NAME_MESSAGE =
+        "Для успешного выполнения команды /track, вводите ссылку, которую Вы хотите начать отслеживать, "
+            + "строго через один пробел после /track!";
 
     private final ScrapperClient scrapperClient;
 
@@ -49,6 +52,10 @@ public class TrackCommand implements Command {
     public SendMessage handle(Update update) {
         long chatId = update.getMessage().getChatId();
         String messageText = update.getMessage().getText();
+
+        if (messageText.equals(name())) {
+            return new SendMessage(String.valueOf(chatId), ONLY_COMMAND_NAME_MESSAGE);
+        }
 
         URI potentialTrackedLink = URI.create(messageText.split(" ")[1]);
         LinkType typeOfPotentialNewLink = checkLinkType(potentialTrackedLink);

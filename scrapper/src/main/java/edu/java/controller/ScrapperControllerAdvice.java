@@ -32,7 +32,7 @@ public class ScrapperControllerAdvice {
 
     @ExceptionHandler(LinkInChatNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleLinkInChatNotFoundException(LinkInChatNotFoundException e) {
-        return handleException(e, HttpStatus.NOT_FOUND, "This link does not already tracked..");
+        return handleException(e, HttpStatus.NOT_FOUND, "This link does not already tracked.");
     }
 
     @ExceptionHandler(TgChatAlreadyExistsException.class)

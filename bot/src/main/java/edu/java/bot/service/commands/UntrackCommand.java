@@ -2,6 +2,7 @@ package edu.java.bot.service.commands;
 
 import edu.java.bot.client.ScrapperClient;
 import edu.java.dto.AddLinkRequest;
+import edu.java.dto.RemoveLinkRequest;
 import edu.java.exceptions.ClientResponseException;
 import edu.java.utils.LinkTypeChecker;
 import java.net.URI;
@@ -28,6 +29,9 @@ public class UntrackCommand implements Command {
         """;
     private static final String LINK_ALREADY_UNTRACK_MESSAGE = "Данная ссылка отсутствует в списке отслеживаемых.";
     private static final String UNEXPECTED_ERROR_MESSAGE = "Прошу прощения, произошла непредвиденная ошибка!";
+    private static final String ONLY_COMMAND_NAME_MESSAGE =
+        "Для успешного выполнения команды /untrack, вводите ссылку, которую Вы хотите прекратить отслеживать, "
+            + "строго через один пробел после /untrack!";
 
     private final ScrapperClient scrapperClient;
 
@@ -50,6 +54,10 @@ public class UntrackCommand implements Command {
         long chatId = update.getMessage().getChatId();
         String messageText = update.getMessage().getText();
 
+        if (messageText.equals(name())) {
+            return new SendMessage(String.valueOf(chatId), ONLY_COMMAND_NAME_MESSAGE);
+        }
+
         URI potentialUntrackedLink = URI.create(messageText.split(" ")[1]);
         LinkType typeOfPotentialNewLink = checkLinkType(potentialUntrackedLink);
 
@@ -58,7 +66,7 @@ public class UntrackCommand implements Command {
         }
 
         try {
-            scrapperClient.trackLink(chatId, new AddLinkRequest(potentialUntrackedLink));
+            scrapperClient.untrackLink(chatId, new RemoveLinkRequest(potentialUntrackedLink));
             return new SendMessage(
                 String.valueOf(chatId),
                 "Ссылка " + potentialUntrackedLink + " больше не отслеживается."
@@ -69,7 +77,8 @@ public class UntrackCommand implements Command {
 
             if (exceptionReasonName.equals("TgChatNotFoundException")) {
                 exceptionMessage = USER_NOT_REGISTERED_MESSAGE;
-            } else if (exceptionReasonName.equals("LinkInChatNotFoundException")) {
+            } else if (exceptionReasonName.equals("LinkNotFoundException")
+                || exceptionReasonName.equals("LinkInChatNotFoundException")) {
                 exceptionMessage = LINK_ALREADY_UNTRACK_MESSAGE;
             } else {
                 log.error("Error: {}", e.getApiErrorResponse().description());

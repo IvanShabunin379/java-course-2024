@@ -2,7 +2,7 @@ app:
   database-access-type: jpa
   scheduler:
     enable: true
-    interval: 30s
+    interval: 100s
     force-check-delay: 10s
 
 spring:
