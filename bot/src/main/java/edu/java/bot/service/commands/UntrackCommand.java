@@ -1,7 +1,6 @@
 package edu.java.bot.service.commands;
 
 import edu.java.bot.client.ScrapperClient;
-import edu.java.dto.AddLinkRequest;
 import edu.java.dto.RemoveLinkRequest;
 import edu.java.exceptions.ClientResponseException;
 import edu.java.utils.LinkTypeChecker;
