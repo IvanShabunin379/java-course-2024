@@ -20,14 +20,13 @@ public class JdbcLinksTrackingsRepository {
             INSERT INTO links_trackings(tg_chat_id, link_id)
             VALUES (?, ?)
             """;
-
+          
         try {
             jdbcTemplate.update(sql, linkTracking.getTgChatId(), linkTracking.getLinkId());
             return true;
         } catch (DataAccessException e) {
             return false;
         }
-
     }
 
     public boolean remove(LinkTracking linkTracking) {
