@@ -4,6 +4,7 @@ import edu.java.domain.model.jdbc.TgChat;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,12 +15,18 @@ import org.springframework.stereotype.Repository;
 public class JdbcTgChatsRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public void add(long id) {
+    public boolean add(long id) {
         String sql = """
             INSERT INTO tg_chats(id)
             VALUES (?)
             """;
-        jdbcTemplate.update(sql, id);
+
+        try {
+            jdbcTemplate.update(sql, id);
+            return true;
+        } catch (DataAccessException e) {
+            return false;
+        }
     }
 
     public boolean remove(long id) {

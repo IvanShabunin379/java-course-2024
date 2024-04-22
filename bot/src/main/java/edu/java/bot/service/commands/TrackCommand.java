@@ -84,6 +84,7 @@ public class TrackCommand implements Command {
 
 //        int trackCommandNameLength = name().length();
 //        return (messageText.equals(name()))
-//            || (messageText.length() > trackCommandNameLength && messageText.substring(0, trackCommandNameLength).equals(name() + " "));
+//            || (messageText.length() > trackCommandNameLength
+//            && messageText.substring(0, trackCommandNameLength).equals(name() + " "));
     }
 }

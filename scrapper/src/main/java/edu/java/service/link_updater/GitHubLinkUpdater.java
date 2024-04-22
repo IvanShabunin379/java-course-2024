@@ -26,17 +26,17 @@ public class GitHubLinkUpdater implements LinkUpdater<GitHubResponse> {
 
     @Override
     public List<GitHubResponse> getUpdatesForLink(Link link) {
-        RepoInfo repoInfo = parseRepoInfo(link.url());
+        RepoInfo repoInfo = parseRepoInfo(link.getUrl());
 
         OffsetDateTime currentTimestamp = OffsetDateTime.now();
         List<GitHubResponse> responses =
                 gitHubClient.getRepositoryUpdates(
                         repoInfo.owner(),
                         repoInfo.repoName(),
-                        link.lastCheckTime(),
+                        link.getLastCheckTime(),
                         currentTimestamp
                 );
-        linksService.updateLastCheckTime(link.id(), currentTimestamp);
+        linksService.updateLastCheckTime(link.getId(), currentTimestamp);
 
         return responses;
     }
@@ -44,17 +44,17 @@ public class GitHubLinkUpdater implements LinkUpdater<GitHubResponse> {
     @Override
     public void sendUpdatesToBot(Link link, List<GitHubResponse> updates) {
         for (var update : updates) {
-            List<Long> tgChatsIds = tgChatsService.listAll(link.url()).stream()
-                    .map(TgChat::id)
+            List<Long> tgChatsIds = tgChatsService.listAll(link.getUrl()).stream()
+                    .map(TgChat::getId)
                     .toList();
 
             LinkUpdateRequest linkUpdateRequest = new LinkUpdateRequest(
-                    link.id(),
-                    link.url(),
+                    link.getId(),
+                    link.getUrl(),
                     String.format(
                             "Новый %s в репозитории %s.\n%s",
                             update.activityType(),
-                            link.url(),
+                            link.getUrl(),
                             update.timestamp().toString()
                     ),
                     tgChatsIds

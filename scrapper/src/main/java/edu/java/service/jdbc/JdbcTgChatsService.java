@@ -13,6 +13,7 @@ import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -24,9 +25,7 @@ public class JdbcTgChatsService implements TgChatsService {
 
     @Override
     public void register(long tgChatId) {
-        try {
-            tgChatsRepository.add(tgChatId);
-        } catch (DataAccessException e) {
+        if (!tgChatsRepository.add(tgChatId)) {
             throw new TgChatAlreadyExistsException();
         }
     }
@@ -44,6 +43,6 @@ public class JdbcTgChatsService implements TgChatsService {
         Link link = linksRepository.findByUrl(linkUri)
             .orElseThrow(LinkNotFoundException::new);
 
-        return linksTrackingsRepository.findAllTgChatsByLink(link.id());
+        return linksTrackingsRepository.findAllTgChatsByLink(link.getId());
     }
 }

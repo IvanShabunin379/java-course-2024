@@ -5,6 +5,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,12 +16,18 @@ import org.springframework.stereotype.Repository;
 public class JdbcLinksRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public void add(URI url) {
+    public boolean add(URI url) {
         String sql = """
             INSERT INTO links(url)
             VALUES (?)
             """;
-        jdbcTemplate.update(sql, url);
+
+        try {
+            jdbcTemplate.update(sql, url.toString());
+            return true;
+        } catch (DataAccessException e) {
+            return false;
+        }
     }
 
     public boolean removeById(long id) {
@@ -28,7 +35,7 @@ public class JdbcLinksRepository {
     }
 
     public boolean removeByUrl(URI url) {
-        return jdbcTemplate.update("DELETE FROM links WHERE url = ?", url) == 1;
+        return jdbcTemplate.update("DELETE FROM links WHERE url = ?", url.toString()) == 1;
     }
 
     public List<Link> findAll() {
@@ -60,7 +67,7 @@ public class JdbcLinksRepository {
         try {
             Link link = jdbcTemplate.queryForObject(
                 "SELECT * FROM links WHERE url = ?",
-                new Object[] {url},
+                new Object[] {url.toString()},
                 new BeanPropertyRowMapper<>(Link.class)
             );
             return Optional.ofNullable(link);
@@ -71,10 +78,10 @@ public class JdbcLinksRepository {
 
     public boolean update(Link link) {
         return jdbcTemplate.update(
-            "UPDATE links SET url = ?, last_checked_time = ? WHERE id = ?",
-            link.url(),
-            link.lastCheckTime(),
-            link.id()
+            "UPDATE links SET url = ?, last_check_time = ? WHERE id = ?",
+            link.getUrl().toString(),
+            link.getLastCheckTime(),
+            link.getId()
         ) == 1;
     }
 }

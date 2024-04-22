@@ -2,7 +2,7 @@ package edu.java.bot.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.net.URI;
+
 import java.util.List;
 
 @Service

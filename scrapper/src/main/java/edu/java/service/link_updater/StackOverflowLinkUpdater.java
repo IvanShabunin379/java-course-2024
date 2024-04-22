@@ -27,12 +27,12 @@ public class StackOverflowLinkUpdater implements LinkUpdater<StackOverflowAnswer
 
     @Override
     public List<StackOverflowAnswerInfo> getUpdatesForLink(Link link) {
-        long questionId = parseQuestionId(link.url());
+        long questionId = parseQuestionId(link.getUrl());
 
         OffsetDateTime currentTimestamp = OffsetDateTime.now();
         StackOverflowResponse response =
-                stackOverflowClient.getQuestionUpdates(questionId, link.lastCheckTime(), currentTimestamp);
-        linksService.updateLastCheckTime(link.id(), currentTimestamp);
+                stackOverflowClient.getQuestionUpdates(questionId, link.getLastCheckTime(), currentTimestamp);
+        linksService.updateLastCheckTime(link.getId(), currentTimestamp);
 
         return response.items();
     }
@@ -40,16 +40,16 @@ public class StackOverflowLinkUpdater implements LinkUpdater<StackOverflowAnswer
     @Override
     public void sendUpdatesToBot(Link link, List<StackOverflowAnswerInfo> updates) {
         for (var update : updates) {
-            List<Long> tgChatsIds = tgChatsService.listAll(link.url()).stream()
-                    .map(TgChat::id)
+            List<Long> tgChatsIds = tgChatsService.listAll(link.getUrl()).stream()
+                    .map(TgChat::getId)
                     .toList();
 
             LinkUpdateRequest linkUpdateRequest = new LinkUpdateRequest(
-                    link.id(),
-                    link.url(),
+                    link.getId(),
+                    link.getUrl(),
                     String.format(
                             "Новый ответ добавлен к вопросу %s.\n%s",
-                            link.url(),
+                            link.getUrl(),
                             update.timestamp().toString()
                     ),
                     tgChatsIds

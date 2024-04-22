@@ -2,7 +2,6 @@ package edu.java.bot.service;
 
 import edu.java.bot.configuration.BotConfig;
 import edu.java.bot.service.commands.Command;
-import java.net.URI;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

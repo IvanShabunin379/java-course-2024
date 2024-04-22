@@ -16,6 +16,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -32,9 +33,7 @@ public class JdbcLinksService implements LinksService {
         linksRepository.add(url);
         Link link = linksRepository.findByUrl(url).get();
 
-        try {
-            linksTrackingsRepository.add(new LinkTracking(tgChatId, link.id()));
-        } catch (DataAccessException e) {
+        if (!linksTrackingsRepository.add(new LinkTracking(tgChatId, link.getId()))) {
             throw new LinkInChatAlreadyExistsException();
         }
 
@@ -46,12 +45,12 @@ public class JdbcLinksService implements LinksService {
         TgChat chat = tgChatsRepository.findById(tgChatId).orElseThrow(TgChatNotFoundException::new);
         Link link = linksRepository.findByUrl(url).orElseThrow(LinkNotFoundException::new);
 
-        if (!linksTrackingsRepository.remove(new LinkTracking(tgChatId, link.id()))) {
+        if (!linksTrackingsRepository.remove(new LinkTracking(tgChatId, link.getId()))) {
             throw new LinkInChatNotFoundException();
         }
 
-        if (linksTrackingsRepository.findAllTgChatsByLink(link.id()).isEmpty()) {
-            linksRepository.removeById(link.id());
+        if (linksTrackingsRepository.findAllTgChatsByLink(link.getId()).isEmpty()) {
+            linksRepository.removeById(link.getId());
         }
 
         return link;
@@ -62,7 +61,7 @@ public class JdbcLinksService implements LinksService {
         Link link = linksRepository.findById(id)
             .orElseThrow(LinkNotFoundException::new);
 
-        linksRepository.update(new Link(link.id(), link.url(), lastCheckTime));
+        linksRepository.update(new Link(link.getId(), link.getUrl(), lastCheckTime));
     }
 
     @Transactional(readOnly = true)

@@ -61,7 +61,7 @@ public class LinksController {
 
         List<LinkResponse> linkResponses = linksService.listAll(chatId)
             .stream()
-            .map(link -> new LinkResponse(link.id(), link.url()))
+            .map(link -> new LinkResponse(link.getId(), link.getUrl()))
             .toList();
 
         log.info("GET: Links were received successfully.");
@@ -89,7 +89,7 @@ public class LinksController {
 
         Link addedLink = linksService.add(chatId, addLinkRequest.link());
         log.info("POST: Link {} was added successfully.", addLinkRequest.link());
-        return new LinkResponse(addedLink.id(), addedLink.url());
+        return new LinkResponse(addedLink.getId(), addedLink.getUrl());
     }
 
     @Operation(summary = "Убрать отслеживание ссылки")
@@ -113,6 +113,6 @@ public class LinksController {
 
         Link removedLink = linksService.remove(chatId, removeLinkRequest.link());
         log.info("DELETE: Link {} was removed successfully.", removeLinkRequest.link());
-        return new LinkResponse(removedLink.id(), removedLink.url());
+        return new LinkResponse(removedLink.getId(), removedLink.getUrl());
     }
 }
