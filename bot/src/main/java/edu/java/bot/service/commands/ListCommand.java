@@ -46,7 +46,7 @@ public class ListCommand implements Command {
                 return new SendMessage(String.valueOf(chatId), EMPTY_LIST_MESSAGE);
             }
 
-            StringBuilder linksListMessage = new StringBuilder("Отслеживаемые Вами ссылки:");
+            StringBuilder linksListMessage = new StringBuilder("Отслеживаемые Вами ссылки:\n");
             List<String> urls = links.stream()
                 .map(link -> link.url().toString())
                 .toList();

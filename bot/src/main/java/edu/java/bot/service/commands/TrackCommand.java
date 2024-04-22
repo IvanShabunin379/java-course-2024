@@ -50,7 +50,7 @@ public class TrackCommand implements Command {
         long chatId = update.getMessage().getChatId();
         String messageText = update.getMessage().getText();
 
-        URI potentialTrackedLink = URI.create(messageText.substring(name().length() + 1, messageText.length() - 1));
+        URI potentialTrackedLink = URI.create(messageText.split(" ")[1]);
         LinkType typeOfPotentialNewLink = checkLinkType(potentialTrackedLink);
 
         if (typeOfPotentialNewLink.equals(LinkTypeChecker.LinkType.UNKNOWN)) {
