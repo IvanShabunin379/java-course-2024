@@ -12,6 +12,7 @@ import edu.java.service.exceptions.TgChatNotFoundException;
 import edu.java.service.LinksService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Limit;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -94,7 +95,7 @@ public class JpaLinksService implements LinksService {
 
     @Override
     public List<Link> findUncheckedLinksForLongestTime(int limit) {
-        return linksRepository.findAllByOrderByLastCheckedTime(limit)
+        return linksRepository.findAllByOrderByLastCheckedTime(Limit.of(limit))
             .stream()
             .map(linkEntity -> new Link(linkEntity.getId(), linkEntity.getUrl(), linkEntity.getLastCheckedTime()))
             .toList();

@@ -15,7 +15,7 @@ public record DatabaseConfig(@NotNull String driverClassName,
                              @NotNull String username,
                              @NotNull String password) {
     @Bean
-    public DataSource dataSource() {
+    public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClassName(driverClassName);
@@ -27,7 +27,7 @@ public record DatabaseConfig(@NotNull String driverClassName,
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplate() {
-        return new JdbcTemplate(dataSource());
+    public JdbcTemplate getJdbcTemplate() {
+        return new JdbcTemplate(getDataSource());
     }
 }

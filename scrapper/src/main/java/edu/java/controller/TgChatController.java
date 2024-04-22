@@ -1,17 +1,15 @@
 package edu.java.controller;
 
 import edu.java.dto.ApiErrorResponse;
+import edu.java.exceptions.BadRequestException;
 import edu.java.service.TgChatsService;
-import edu.java.utils.ValidationUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,9 +42,9 @@ public class TgChatController {
         )
     })
     @PostMapping("/{id}")
-    public void registerChat(@PathVariable long id, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            ValidationUtils.handleBindingResultErrors(bindingResult);
+    public void registerChat(@PathVariable long id) {
+        if (id <= 0) {
+            throw new BadRequestException("Tg-chat id should be positive.");
         }
 
         tgChatsService.register(id);
@@ -63,9 +61,9 @@ public class TgChatController {
         )
     })
     @DeleteMapping("/{id}")
-    public void removeChat(@PathVariable @Positive long id, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            ValidationUtils.handleBindingResultErrors(bindingResult);
+    public void removeChat(@PathVariable long id) {
+        if (id <= 0) {
+            throw new BadRequestException("Tg-chat id should be positive.");
         }
 
         tgChatsService.unregister(id);

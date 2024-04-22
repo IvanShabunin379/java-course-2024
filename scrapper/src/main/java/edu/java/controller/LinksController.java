@@ -6,6 +6,7 @@ import edu.java.dto.ApiErrorResponse;
 import edu.java.dto.LinkResponse;
 import edu.java.dto.ListLinksResponse;
 import edu.java.dto.RemoveLinkRequest;
+import edu.java.exceptions.BadRequestException;
 import edu.java.service.LinksService;
 import edu.java.utils.ValidationUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,12 +54,9 @@ public class LinksController {
         )
     })
     @GetMapping
-    public ListLinksResponse getLinks(
-        @RequestHeader("Tg-Chat-Id") @Positive long chatId,
-        BindingResult bindingResult
-    ) {
-        if (bindingResult.hasErrors()) {
-            ValidationUtils.handleBindingResultErrors(bindingResult);
+    public ListLinksResponse getLinks(@RequestHeader("Tg-Chat-Id") long chatId) {
+        if (chatId <= 0) {
+            throw new BadRequestException("Tg-chat id should be positive.");
         }
 
         List<LinkResponse> linkResponses = linksService.listAll(chatId)

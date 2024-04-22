@@ -28,9 +28,9 @@ public class LinkEntity {
     @Column(name = "url", nullable = false, unique = true)
     private URI url;
 
-    @Column(name = "last_checked_time", nullable = false)
+    @Column(name = "last_check_time", nullable = false)
     private OffsetDateTime lastCheckedTime;
 
-    @ManyToMany(mappedBy = "tg_chats")
+    @ManyToMany(mappedBy = "links")
     List<TgChatEntity> tgChats;
 }

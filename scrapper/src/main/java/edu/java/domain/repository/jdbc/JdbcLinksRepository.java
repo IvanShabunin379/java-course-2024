@@ -37,7 +37,7 @@ public class JdbcLinksRepository {
 
     public List<Link> findUncheckedLinksForLongestTime(int limit) {
         return jdbcTemplate.query(
-            "SELECT * FROM links ORDER BY last_checked_time ASC LIMIT ?",
+            "SELECT * FROM links ORDER BY last_check_time ASC LIMIT (?)",
             new Object[] {limit},
             new BeanPropertyRowMapper<>(Link.class)
         );

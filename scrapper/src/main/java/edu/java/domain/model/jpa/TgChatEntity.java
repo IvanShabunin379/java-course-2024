@@ -27,7 +27,7 @@ public class TgChatEntity {
     @ManyToMany
     @JoinTable(
         name = "links_trackings",
-        joinColumns = @JoinColumn(name = "id"),
-        inverseJoinColumns = @JoinColumn(name = "id"))
+        joinColumns = @JoinColumn(name = "tg_chat_id"),
+        inverseJoinColumns = @JoinColumn(name = "link_id"))
     private List<LinkEntity> links;
 }

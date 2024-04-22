@@ -80,9 +80,10 @@ public class TrackCommand implements Command {
     @Override
     public boolean supports(Update update) {
         String messageText = update.getMessage().getText();
+        return messageText.split(" ")[0].equals(name());
 
-        int trackCommandNameLength = name().length();
-        return (messageText.length() > trackCommandNameLength)
-            && (messageText.substring(0, trackCommandNameLength).equals(name() + " "));
+//        int trackCommandNameLength = name().length();
+//        return (messageText.equals(name()))
+//            || (messageText.length() > trackCommandNameLength && messageText.substring(0, trackCommandNameLength).equals(name() + " "));
     }
 }
