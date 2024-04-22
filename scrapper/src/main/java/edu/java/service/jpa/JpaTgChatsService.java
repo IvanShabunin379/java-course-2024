@@ -5,14 +5,13 @@ import edu.java.domain.model.jpa.LinkEntity;
 import edu.java.domain.model.jpa.TgChatEntity;
 import edu.java.domain.repository.jpa.JpaLinksRepository;
 import edu.java.domain.repository.jpa.JpaTgChatsRepository;
+import edu.java.service.TgChatsService;
 import edu.java.service.exceptions.LinkNotFoundException;
 import edu.java.service.exceptions.TgChatAlreadyExistsException;
 import edu.java.service.exceptions.TgChatNotFoundException;
-import edu.java.service.TgChatsService;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 

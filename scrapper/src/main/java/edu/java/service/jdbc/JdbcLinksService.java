@@ -6,17 +6,15 @@ import edu.java.domain.model.jdbc.TgChat;
 import edu.java.domain.repository.jdbc.JdbcLinksRepository;
 import edu.java.domain.repository.jdbc.JdbcLinksTrackingsRepository;
 import edu.java.domain.repository.jdbc.JdbcTgChatsRepository;
+import edu.java.service.LinksService;
 import edu.java.service.exceptions.LinkInChatAlreadyExistsException;
 import edu.java.service.exceptions.LinkInChatNotFoundException;
 import edu.java.service.exceptions.LinkNotFoundException;
 import edu.java.service.exceptions.TgChatNotFoundException;
-import edu.java.service.LinksService;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional

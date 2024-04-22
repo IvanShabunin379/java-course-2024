@@ -1,10 +1,10 @@
 package edu.java.domain.model.jdbc;
 
+import java.net.URI;
+import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.net.URI;
-import java.time.OffsetDateTime;
 
 @Data
 @NoArgsConstructor
