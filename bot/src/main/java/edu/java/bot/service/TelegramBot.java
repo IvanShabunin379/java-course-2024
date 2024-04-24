@@ -15,6 +15,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
 @Slf4j
+@SuppressWarnings("MultipleStringLiterals")
 public class TelegramBot extends TelegramLongPollingBot {
     private final BotAppConfig config;
     private final List<Command> commands;

@@ -1,9 +1,9 @@
 package edu.java.client;
 
 import edu.java.responses.GitHubResponse;
+import edu.java.utils.ApiErrorHandler;
 import java.time.OffsetDateTime;
 import java.util.List;
-import edu.java.utils.ApiErrorHandler;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;

@@ -2,8 +2,6 @@ package edu.java.configuration;
 
 import edu.java.retry.ClientRetryConfig;
 import java.time.Duration;
-import java.util.Set;
-import edu.java.retry.RetryDelayStrategy;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;

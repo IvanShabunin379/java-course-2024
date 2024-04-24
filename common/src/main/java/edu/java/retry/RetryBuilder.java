@@ -1,16 +1,17 @@
 package edu.java.retry;
 
 import edu.java.exceptions.ServerErrorException;
+import java.time.Duration;
+import java.util.Set;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
-import java.time.Duration;
-import java.util.Set;
 
 public class RetryBuilder {
     private int maxAttempts = 0;
     private Duration duration = Duration.ZERO;
+    @SuppressWarnings("MagicNumber")
     private Set<Integer> statusCodes = Set.of(500, 502, 503);
 
     public RetryBuilder withMaxAttempts(int maxAttempts) {

@@ -1,9 +1,9 @@
 package edu.java.configuration;
 
 import edu.java.client.BotClient;
-import edu.java.retry.RetryFactory;
 import edu.java.client.GitHubClient;
 import edu.java.client.StackOverflowClient;
+import edu.java.retry.RetryFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

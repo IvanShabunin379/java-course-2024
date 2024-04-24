@@ -18,6 +18,8 @@ public class ApiErrorHandler {
 
     public static @NotNull Mono<ServerErrorException> handleServerError(@NotNull ClientResponse clientResponse) {
         return clientResponse.bodyToMono(ApiErrorResponse.class)
-            .flatMap(apiErrorResponse -> Mono.error(new ServerErrorException(HttpStatus.valueOf(apiErrorResponse.code()))));
+            .flatMap(
+                apiErrorResponse -> Mono.error(new ServerErrorException(HttpStatus.valueOf(apiErrorResponse.code())))
+            );
     }
 }
