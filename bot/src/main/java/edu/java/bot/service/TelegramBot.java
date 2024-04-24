@@ -1,6 +1,6 @@
 package edu.java.bot.service;
 
-import edu.java.bot.configuration.BotConfig;
+import edu.java.bot.configuration.BotAppConfig;
 import edu.java.bot.service.commands.Command;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +16,10 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 @Slf4j
 public class TelegramBot extends TelegramLongPollingBot {
-    private final BotConfig config;
+    private final BotAppConfig config;
     private final List<Command> commands;
 
-    public TelegramBot(BotConfig config, List<Command> commands) {
+    public TelegramBot(BotAppConfig config, List<Command> commands) {
         this.config = config;
         this.commands = commands;
 

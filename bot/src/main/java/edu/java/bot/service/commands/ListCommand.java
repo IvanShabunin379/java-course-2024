@@ -3,7 +3,7 @@ package edu.java.bot.service.commands;
 import edu.java.bot.client.ScrapperClient;
 import edu.java.dto.LinkResponse;
 import edu.java.dto.ListLinksResponse;
-import edu.java.exceptions.ClientResponseException;
+import edu.java.exceptions.ClientErrorException;
 import java.util.List;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -53,7 +53,7 @@ public class ListCommand implements Command {
             linksListMessage.append(String.join("\n\n", urls));
 
             return new SendMessage(String.valueOf(chatId), linksListMessage.toString());
-        } catch (ClientResponseException e) {
+        } catch (ClientErrorException e) {
             return new SendMessage(String.valueOf(chatId), USER_NOT_REGISTERED_MESSAGE);
         }
     }

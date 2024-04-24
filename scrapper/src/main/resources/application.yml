@@ -4,6 +4,30 @@ app:
     enable: true
     interval: 100s
     force-check-delay: 10s
+  git-hub-client-retry:
+    max-attempts: 3
+    duration: 2s
+    strategy: exponential
+    status-codes:
+      - 500
+      - 502
+      - 503
+  stack-overflow-client-retry:
+    max-attempts: 3
+    duration: 2s
+    strategy: exponential
+    status-codes:
+      - 500
+      - 502
+      - 503
+  bot-client-retry:
+    max-attempts: 3
+    duration: 2s
+    strategy: exponential
+    status-codes:
+      - 500
+      - 502
+      - 503
 
 spring:
   application:

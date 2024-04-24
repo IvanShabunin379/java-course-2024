@@ -1,7 +1,7 @@
 package edu.java.bot.service.commands;
 
 import edu.java.bot.client.ScrapperClient;
-import edu.java.exceptions.ClientResponseException;
+import edu.java.exceptions.ClientErrorException;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -44,7 +44,7 @@ public class StartCommand implements Command {
             scrapperClient.registerChat(chatId);
             String helloMessage = "Здравствуйте, " + userName + "! ";
             return new SendMessage(String.valueOf(chatId), helloMessage + START_MESSAGE);
-        } catch (ClientResponseException e) {
+        } catch (ClientErrorException e) {
             return new SendMessage(String.valueOf(chatId), userName + ", " + USER_ALREADY_REGISTERED_MESSAGE);
         }
     }

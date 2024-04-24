@@ -2,7 +2,7 @@ package edu.java.bot.service.commands;
 
 import edu.java.bot.client.ScrapperClient;
 import edu.java.dto.RemoveLinkRequest;
-import edu.java.exceptions.ClientResponseException;
+import edu.java.exceptions.ClientErrorException;
 import edu.java.utils.LinkTypeChecker;
 import java.net.URI;
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +70,7 @@ public class UntrackCommand implements Command {
                 String.valueOf(chatId),
                 "Ссылка " + potentialUntrackedLink + " больше не отслеживается."
             );
-        } catch (ClientResponseException e) {
+        } catch (ClientErrorException e) {
             String exceptionMessage;
             String exceptionReasonName = e.getApiErrorResponse().exceptionName();
 

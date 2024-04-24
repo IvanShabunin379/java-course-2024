@@ -15,7 +15,7 @@ public class ControllerAdviceUtils {
     ) {
         ApiErrorResponse apiErrorResponse = new ApiErrorResponse(
             description,
-            String.valueOf(httpStatus.value()),
+            String.valueOf(httpStatus),
             e.getClass().getSimpleName(),
             e.getMessage(),
             Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).toList()

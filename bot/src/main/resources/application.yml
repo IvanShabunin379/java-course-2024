@@ -1,6 +1,14 @@
 app:
   telegram-token: ${APP_TELEGRAM_TOKEN}
   bot-name: "ISH_web_scraper_bot"
+  scrapper-client-retry:
+    max-attempts: 3
+    duration: 2s
+    strategy: exponential
+    status-codes:
+      - 500
+      - 502
+      - 503
 
 spring:
   application:

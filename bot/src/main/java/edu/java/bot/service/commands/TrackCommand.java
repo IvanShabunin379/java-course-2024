@@ -2,7 +2,7 @@ package edu.java.bot.service.commands;
 
 import edu.java.bot.client.ScrapperClient;
 import edu.java.dto.AddLinkRequest;
-import edu.java.exceptions.ClientResponseException;
+import edu.java.exceptions.ClientErrorException;
 import edu.java.utils.LinkTypeChecker;
 import java.net.URI;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +67,7 @@ public class TrackCommand implements Command {
         try {
             scrapperClient.trackLink(chatId, new AddLinkRequest(potentialTrackedLink));
             return new SendMessage(String.valueOf(chatId), "Ссылка " + potentialTrackedLink + " теперь отслеживается.");
-        } catch (ClientResponseException e) {
+        } catch (ClientErrorException e) {
             String exceptionMessage;
             String exceptionReasonName = e.getApiErrorResponse().exceptionName();
 
