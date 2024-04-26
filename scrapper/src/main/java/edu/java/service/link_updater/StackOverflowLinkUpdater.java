@@ -13,6 +13,7 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.regex.Matcher;
+import edu.java.service.link_updates_sender.LinkUpdatesSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import static edu.java.utils.LinkTypeChecker.STACK_OVERFLOW_QUESTION_URL_PATTERN;
@@ -21,7 +22,7 @@ import static edu.java.utils.LinkTypeChecker.STACK_OVERFLOW_QUESTION_URL_PATTERN
 @RequiredArgsConstructor
 public class StackOverflowLinkUpdater implements LinkUpdater<StackOverflowAnswerInfo> {
     private final StackOverflowClient stackOverflowClient;
-    private final BotClient botClient;
+    private final LinkUpdatesSender updatesSender;
     private final LinksService linksService;
     private final TgChatsService tgChatsService;
 
@@ -55,7 +56,7 @@ public class StackOverflowLinkUpdater implements LinkUpdater<StackOverflowAnswer
                     tgChatsIds
             );
 
-            botClient.sendLinkUpdate(linkUpdateRequest);
+            updatesSender.send(linkUpdateRequest);
         }
     }
 
