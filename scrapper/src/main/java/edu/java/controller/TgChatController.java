@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
     )
 })
 public class TgChatController {
+    private static final String NON_POSITIVE_TG_CHAT_ID_MSG = "Tg-chat id should be positive.";
+
     private final TgChatsService tgChatsService;
 
     @Operation(summary = "Зарегистрировать чат")
@@ -44,7 +46,7 @@ public class TgChatController {
     @PostMapping("/{id}")
     public void registerChat(@PathVariable long id) {
         if (id <= 0) {
-            throw new BadRequestException("Tg-chat id should be positive.");
+            throw new BadRequestException(NON_POSITIVE_TG_CHAT_ID_MSG);
         }
 
         tgChatsService.register(id);
@@ -63,7 +65,7 @@ public class TgChatController {
     @DeleteMapping("/{id}")
     public void removeChat(@PathVariable long id) {
         if (id <= 0) {
-            throw new BadRequestException("Tg-chat id should be positive.");
+            throw new BadRequestException(NON_POSITIVE_TG_CHAT_ID_MSG);
         }
 
         tgChatsService.unregister(id);
