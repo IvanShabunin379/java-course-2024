@@ -1,5 +1,7 @@
 package edu.java.bot.configuration;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -9,20 +11,20 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.DefaultErrorHandler;
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 public class KafkaUpdatesConsumerConfig {
     @Bean
     ConcurrentKafkaListenerContainerFactory<Integer, String>
-    kafkaListenerContainerFactory(ConsumerFactory<Integer, String> consumerFactory, DefaultErrorHandler errorHandler, BotAppConfig config) {
+    kafkaListenerContainerFactory(
+        ConsumerFactory<Integer, String> consumerFactory,
+        BotAppConfig config
+    ) {
         ConcurrentKafkaListenerContainerFactory<Integer, String> factory =
             new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setConsumerFactory(consumerFactory);
         factory.setConcurrency(config.kafkaUpdatesConsumerConfig().concurrency());
-        factory.setCommonErrorHandler(errorHandler);
 
         return factory;
     }

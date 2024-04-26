@@ -45,7 +45,10 @@ public class KafkaUpdatesProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<Integer, String> kafkaTemplate(ProducerFactory<Integer, String> producerFactory, ScrapperAppConfig config) {
+    public KafkaTemplate<Integer, String> kafkaTemplate(
+        ProducerFactory<Integer, String> producerFactory,
+        ScrapperAppConfig config
+    ) {
         var kafkaTemplate = new KafkaTemplate<>(producerFactory);
         kafkaTemplate.setDefaultTopic(config.kafkaUpdatesProducer().topicName());
         return new KafkaTemplate<>(producerFactory);
