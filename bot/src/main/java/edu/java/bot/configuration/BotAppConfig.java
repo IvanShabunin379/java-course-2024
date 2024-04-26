@@ -9,11 +9,17 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
 public record BotAppConfig(
-    @NotEmpty
-    String telegramToken,
-    @NotEmpty
-    String botName,
-    @NotNull
-    ClientRetryConfig scrapperClientRetry
+    @NotEmpty String telegramToken,
+    @NotEmpty String botName,
+    @NotNull ClientRetryConfig scrapperClientRetry,
+    @NotNull KafkaConsumerConfig kafkaUpdatesConsumerConfig
 ) {
+    public record KafkaConsumerConfig(
+        @NotNull String bootstrapServers,
+        @NotNull String topicName,
+        @NotNull String groupId,
+        @NotNull String autoOffsetReset,
+        int concurrency
+    ) {
+    }
 }

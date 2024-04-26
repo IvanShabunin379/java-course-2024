@@ -28,6 +28,16 @@ app:
       - 500
       - 502
       - 503
+  kafka-updates-producer:
+    topic-name: link_updates
+    bootstrap-servers: localhost:29092
+    acks-mode: 1
+    delivery-timeout: 60s
+    linger-ms: 12_000
+    batch-size: 100_000
+    max-in-flight-per-connection: 5
+    enable-idempotence: true
+  use-queue: true
 
 spring:
   application:

@@ -13,12 +13,26 @@ public record ScrapperAppConfig(
     @NotNull ClientRetryConfig gitHubClientRetry,
     @NotNull ClientRetryConfig stackOverflowClientRetry,
     @NotNull ClientRetryConfig botClientRetry,
-    @NotNull AccessType databaseAccessType
+    @NotNull AccessType databaseAccessType,
+    @NotNull KafkaProducerConfig kafkaUpdatesProducer,
+    boolean useQueue
 ) {
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }
 
     public enum AccessType {
         JDBC, JPA, JOOQ
+    }
+
+    public record KafkaProducerConfig(
+        @NotNull String bootstrapServers,
+        @NotNull String topicName,
+        @NotNull String acksMode,
+        @NotNull Duration deliveryTimeout,
+        int lingerMs,
+        int batchSize,
+        int maxInFlightPerConnection,
+        boolean enableIdempotence
+    ) {
     }
 }

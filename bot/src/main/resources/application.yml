@@ -9,6 +9,12 @@ app:
       - 500
       - 502
       - 503
+  kafka-updates-consumer-config:
+    topic-name: link_updates
+    bootstrap-servers: localhost:29092
+    group-id: tg-
+    auto-offset-reset: earliest
+    concurrency: 1
 
 spring:
   application:
