@@ -1,12 +1,11 @@
 package edu.java.service.link_updates_sender;
 
 import edu.java.dto.LinkUpdateRequest;
+import java.util.concurrent.ExecutionException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
