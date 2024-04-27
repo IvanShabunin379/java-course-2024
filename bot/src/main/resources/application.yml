@@ -12,9 +12,13 @@ app:
   kafka-updates-consumer-config:
     topic-name: link_updates
     bootstrap-servers: localhost:29092
-    group-id: tg-
+    group-id: bot
     auto-offset-reset: earliest
     concurrency: 1
+  kafka-dlq-producer-config:
+    topic-name: link_updates_dlq
+    bootstrap-servers: localhost:29092
+    linger-ms: 100
 
 spring:
   application:

@@ -12,7 +12,8 @@ public record BotAppConfig(
     @NotEmpty String telegramToken,
     @NotEmpty String botName,
     @NotNull ClientRetryConfig scrapperClientRetry,
-    @NotNull KafkaConsumerConfig kafkaUpdatesConsumerConfig
+    @NotNull KafkaConsumerConfig kafkaUpdatesConsumerConfig,
+    @NotNull KafkaProducerConfig kafkaDlqProducerConfig
 ) {
     public record KafkaConsumerConfig(
         @NotNull String bootstrapServers,
@@ -20,6 +21,13 @@ public record BotAppConfig(
         @NotNull String groupId,
         @NotNull String autoOffsetReset,
         int concurrency
+    ) {
+    }
+
+    public record KafkaProducerConfig(
+        @NotNull String bootstrapServers,
+        @NotNull String topicName,
+        int lingerMs
     ) {
     }
 }
