@@ -3,7 +3,7 @@ app:
   scheduler:
     enable: true
     interval: 100s
-    force-check-delay: 10s
+    force-check-delay: 50s
   git-hub-client-retry:
     max-attempts: 3
     duration: 2s
@@ -70,3 +70,21 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui
+
+# Конфигурация Rate limiting
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: buckets
+      url: .*
+      http-status-code: TOO_MANY_REQUESTS
+      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"You have exhausted your API Request Quota\" }"
+      rate-limits:
+        - cache-key: getRemoteAddr()
+          bandwidths:
+            - capacity: 100
+              refill-capacity: 20
+              time: 1
+              unit: minutes
+              initial-capacity: 80
+              refill-speed: interval
