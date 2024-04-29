@@ -3,7 +3,7 @@ app:
   scheduler:
     enable: true
     interval: 100s
-    force-check-delay: 10s
+    force-check-delay: 50s
   git-hub-client-retry:
     max-attempts: 3
     duration: 2s
