@@ -42,8 +42,8 @@ public class JdbcTgChatsService implements TgChatsService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<TgChat> listAll(URI linkUri) {
-        Link link = linksRepository.findByUrl(linkUri)
+    public List<TgChat> listAll(URI linkUrl) {
+        Link link = linksRepository.findByUrl(linkUrl)
             .orElseThrow(LinkNotFoundException::new);
 
         return linksTrackingsRepository.findAllTgChatsByLink(link.id());
