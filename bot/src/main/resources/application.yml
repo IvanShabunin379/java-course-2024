@@ -48,19 +48,18 @@ springdoc:
 bucket4j:
   enabled: true
   filters:
-    - cache-name: buckets
+    - cache-name: rate-limit-buckets
       url: .*
       http-status-code: TOO_MANY_REQUESTS
-      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\":
-      \"You have exhausted your API Request Quota\" }"
+      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"You have exhausted your API Request Quota\" }"
       rate-limits:
         - cache-key: getRemoteAddr()
           bandwidths:
-            - capacity: 50
+            - capacity: 1
               refill-capacity: 1
               time: 2
               unit: seconds
-              initial-capacity: 10
+              initial-capacity: 1
               refill-speed: interval
 
 management:
