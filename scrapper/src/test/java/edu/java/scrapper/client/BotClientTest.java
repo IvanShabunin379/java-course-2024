@@ -1,7 +1,6 @@
 package edu.java.scrapper.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import edu.java.AbstractClientTest;
 import edu.java.client.BotClient;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterAll;
@@ -24,8 +23,6 @@ public class BotClientTest extends AbstractClientTest {
         server.shutdown();
     }
 
-    // Реализуйте тест для метода sendLinkUpdate класса BotClient
-    // Тест должен быть реализован по аналогии с тестами из GitHubClientTest и StackOverflowClientTest
     @Test
     @SneakyThrows
     public void shouldSendLinkUpdate() {
