@@ -1,17 +1,16 @@
-package edu.java.scrapper.client;
+package edu.java.bot.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import edu.java.client.BotClient;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
-public class BotClientTest extends AbstractClientTest {
+public class ScrapperClientTest extends AbstractClientTest {
     private static final WireMockServer server = new WireMockServer(wireMockConfig().dynamicPort());
 
-    private final BotClient botClient = new BotClient(server.baseUrl());
+    private final ScrapperClient scrapperClient = new ScrapperClient(server.baseUrl());
 
     @BeforeAll
     public static void beforeAll() {
@@ -25,7 +24,30 @@ public class BotClientTest extends AbstractClientTest {
 
     @Test
     @SneakyThrows
-    public void shouldSendLinkUpdate() {
+    public void shouldRegisterChat() {
+    }
+
+    @Test
+    @SneakyThrows
+    public void shouldRemoveChat() {
+
+    }
+
+    @Test
+    @SneakyThrows
+    public void shouldGetLinks() {
+
+    }
+
+    @Test
+    @SneakyThrows
+    public void shouldTrackLink() {
+
+    }
+
+    @Test
+    @SneakyThrows
+    public void shouldUntrackLink() {
 
     }
 }

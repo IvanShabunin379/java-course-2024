@@ -1,9 +1,7 @@
-package edu.java;
+package edu.java.bot.client;
 
 import lombok.SneakyThrows;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public abstract class AbstractClientTest {
