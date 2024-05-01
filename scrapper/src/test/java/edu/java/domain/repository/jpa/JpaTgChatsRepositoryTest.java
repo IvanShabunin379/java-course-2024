@@ -1,29 +1,32 @@
-package edu.java.scrapper.domain.repository.jpa;
+package edu.java.domain.repository.jpa;
 
-import edu.java.domain.model.jdbc.TgChat;
 import edu.java.domain.model.jpa.TgChatEntity;
-import edu.java.domain.repository.jpa.JpaTgChatsRepository;
-import lombok.RequiredArgsConstructor;
+import edu.java.IntegrationTest;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@RequiredArgsConstructor
-public class JpaTgChatsRepositoryTest {
-    private static final OffsetDateTime TEST_CREATED_TIMESTAMP = OffsetDateTime.of (2024, 4, 30, 14, 0, 0, 0, ZoneOffset.UTC);
+public class JpaTgChatsRepositoryTest extends IntegrationTest {
+    private static final OffsetDateTime TEST_CREATED_TIMESTAMP =
+        OffsetDateTime.of(2024, 4, 30, 14, 0, 0, 0, ZoneOffset.UTC);
 
-    private final JpaTgChatsRepository tgChatsRepository;
+    @Autowired
+    private JpaTgChatsRepository tgChatsRepository;
+
     private TgChatEntity testTgChat;
 
     @BeforeEach
     public void setUp() {
+        testTgChat = new TgChatEntity();
         testTgChat.setId(123);
         testTgChat.setCreatedAt(TEST_CREATED_TIMESTAMP);
+
         tgChatsRepository.save(testTgChat);
     }
 
@@ -33,7 +36,9 @@ public class JpaTgChatsRepositoryTest {
     }
 
     @Test
-    public void tgChatShouldCanBeFoundByIdWhenItCreated() {
+    public void tgChatShouldCanBeExistsAndFoundByIdWhenItCreated() {
+        assertThat(tgChatsRepository.existsById(testTgChat.getId())).isTrue();
+
         TgChatEntity tgChat = tgChatsRepository.findById(testTgChat.getId()).orElse(null);
 
         assertThat(tgChat).isNotNull();
@@ -42,8 +47,12 @@ public class JpaTgChatsRepositoryTest {
     }
 
     @Test
-    public void tgChatShouldCanNotBeFoundByIdWhenItCreated() {
+    public void tgChatShouldCanNotBeFoundByIdWhenItDeleted() {
+        assertThat(tgChatsRepository.existsById(testTgChat.getId())).isTrue();
+
         tgChatsRepository.delete(testTgChat);
+
+        assertThat(tgChatsRepository.existsById(testTgChat.getId())).isFalse();
         TgChatEntity tgChat = tgChatsRepository.findById(testTgChat.getId()).orElse(null);
         assertThat(tgChat).isNull();
     }

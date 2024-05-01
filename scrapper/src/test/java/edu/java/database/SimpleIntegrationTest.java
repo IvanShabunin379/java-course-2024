@@ -1,5 +1,6 @@
-package edu.java.scrapper;
+package edu.java.database;
 
+import edu.java.IntegrationTest;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

@@ -1,19 +1,17 @@
-package edu.java.scrapper.client;
+package edu.java.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import edu.java.AbstractClientTest;
-import edu.java.client.GitHubClient;
 import edu.java.responses.GitHubResponse;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,18 +34,18 @@ public class GitHubClientTest extends AbstractClientTest {
     @SneakyThrows
     public void shouldGetGitHubResponses() {
         server.stubFor(get(urlPathMatching("/repos/owner/repository/activity"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBody(jsonToString("src/test/resources/github.json"))
-            )
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(jsonToString("src/test/resources/github.json"))
+                )
         );
 
         List<GitHubResponse> responses = githubClient.getRepositoryUpdates(
-            "owner",
-            "repository",
-            OffsetDateTime.of(2024, 3, 7, 20, 5, 0, 0, ZoneOffset.UTC),
-            OffsetDateTime.now()
+                "owner",
+                "repository",
+                OffsetDateTime.of(2024, 3, 7, 20, 5, 0, 0, ZoneOffset.UTC),
+                OffsetDateTime.now()
         );
 
         assertThat(responses).hasSize(2);
