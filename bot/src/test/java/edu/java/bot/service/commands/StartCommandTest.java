@@ -3,7 +3,7 @@ package edu.java.bot.service.commands;
 import edu.java.bot.AbstractBotTest;
 import edu.java.bot.client.ScrapperClient;
 import edu.java.dto.ApiErrorResponse;
-import edu.java.exceptions.ClientResponseException;
+import edu.java.exceptions.ClientErrorException;
 import org.junit.jupiter.api.Test;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -33,7 +33,7 @@ public class StartCommandTest extends AbstractBotTest {
         ScrapperClient scrapperClient = mock(ScrapperClient.class);
 
         ApiErrorResponse apiErrorResponse = mock(ApiErrorResponse.class);
-        doThrow(new ClientResponseException(apiErrorResponse))
+        doThrow(new ClientErrorException(apiErrorResponse))
             .when(scrapperClient).registerChat(ALREADY_EXISTED_TG_CHAT_ID);
 
         return scrapperClient;

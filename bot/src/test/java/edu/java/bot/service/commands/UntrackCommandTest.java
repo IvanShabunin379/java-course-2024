@@ -5,7 +5,7 @@ import edu.java.bot.client.ScrapperClient;
 import edu.java.dto.ApiErrorResponse;
 import edu.java.dto.LinkResponse;
 import edu.java.dto.RemoveLinkRequest;
-import edu.java.exceptions.ClientResponseException;
+import edu.java.exceptions.ClientErrorException;
 import java.net.URI;
 import org.junit.jupiter.api.Test;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -47,12 +47,12 @@ public class UntrackCommandTest extends AbstractBotTest {
         ApiErrorResponse tgChatNotFoundApiErrorResponse = mock(ApiErrorResponse.class);
         when(tgChatNotFoundApiErrorResponse.exceptionName()).thenReturn("TgChatNotFoundException");
         when(scrapperClient.untrackLink(UNREGISTERED_CHAT_ID, new RemoveLinkRequest(TEST_LINK_URL)))
-            .thenThrow(new ClientResponseException(tgChatNotFoundApiErrorResponse));
+            .thenThrow(new ClientErrorException(tgChatNotFoundApiErrorResponse));
 
         ApiErrorResponse linkInChatNotFoundApiErrorResponse = mock(ApiErrorResponse.class);
         when(linkInChatNotFoundApiErrorResponse.exceptionName()).thenReturn("LinkInChatNotFoundException");
         when(scrapperClient.untrackLink(ALREADY_UNTRACKED_LINK_CHAT_ID, new RemoveLinkRequest(TEST_LINK_URL)))
-            .thenThrow(new ClientResponseException(linkInChatNotFoundApiErrorResponse));
+            .thenThrow(new ClientErrorException(linkInChatNotFoundApiErrorResponse));
 
         return scrapperClient;
     }

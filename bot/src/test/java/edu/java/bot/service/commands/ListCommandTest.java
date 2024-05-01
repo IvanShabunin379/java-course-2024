@@ -5,7 +5,7 @@ import edu.java.bot.client.ScrapperClient;
 import edu.java.dto.ApiErrorResponse;
 import edu.java.dto.LinkResponse;
 import edu.java.dto.ListLinksResponse;
-import edu.java.exceptions.ClientResponseException;
+import edu.java.exceptions.ClientErrorException;
 import java.net.URI;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,7 @@ public class ListCommandTest extends AbstractBotTest {
 
         ApiErrorResponse apiErrorResponse = mock(ApiErrorResponse.class);
         when(scrapperClient.getLinks(UNREGISTERED_TG_CHAT_ID))
-            .thenThrow(new ClientResponseException(apiErrorResponse));
+            .thenThrow(new ClientErrorException(apiErrorResponse));
 
         return scrapperClient;
     }

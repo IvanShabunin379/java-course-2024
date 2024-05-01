@@ -5,7 +5,7 @@ import edu.java.bot.client.ScrapperClient;
 import edu.java.dto.AddLinkRequest;
 import edu.java.dto.ApiErrorResponse;
 import edu.java.dto.LinkResponse;
-import edu.java.exceptions.ClientResponseException;
+import edu.java.exceptions.ClientErrorException;
 import java.net.URI;
 import org.junit.jupiter.api.Test;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -46,12 +46,12 @@ public class TrackCommandTest extends AbstractBotTest {
         ApiErrorResponse tgChatNotFoundApiErrorResponse = mock(ApiErrorResponse.class);
         when(tgChatNotFoundApiErrorResponse.exceptionName()).thenReturn("TgChatNotFoundException");
         when(scrapperClient.trackLink(UNREGISTERED_CHAT_ID, new AddLinkRequest(TEST_LINK_URL)))
-            .thenThrow(new ClientResponseException(tgChatNotFoundApiErrorResponse));
+            .thenThrow(new ClientErrorException(tgChatNotFoundApiErrorResponse));
 
         ApiErrorResponse linkInChatAlreadyExistsApiErrorResponse = mock(ApiErrorResponse.class);
         when(linkInChatAlreadyExistsApiErrorResponse.exceptionName()).thenReturn("LinkInChatAlreadyExistsException");
         when(scrapperClient.trackLink(ALREADY_TRACKED_LINK_CHAT_ID, new AddLinkRequest(TEST_LINK_URL)))
-            .thenThrow(new ClientResponseException(linkInChatAlreadyExistsApiErrorResponse));
+            .thenThrow(new ClientErrorException(linkInChatAlreadyExistsApiErrorResponse));
 
         return scrapperClient;
     }
