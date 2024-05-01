@@ -1,8 +1,6 @@
-package edu.java.scrapper.client;
+package edu.java.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import edu.java.AbstractClientTest;
-import edu.java.client.BotClient;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

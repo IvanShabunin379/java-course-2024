@@ -26,7 +26,7 @@ public class TrackCommand implements Command {
 
         Для начала работы с ботом необходимо вызвать команду /start.
         """;
-    private static final String LINK_ALREADY_TRACK_MESSAGE = "Данная ссылка отслеживается";
+    private static final String LINK_ALREADY_TRACKED_MESSAGE = "Данная ссылка отслеживается";
     private static final String UNEXPECTED_ERROR_MESSAGE = "Прошу прощения, произошла непредвиденная ошибка!";
     private static final String ONLY_COMMAND_NAME_MESSAGE =
         "Для успешного выполнения команды /track, вводите ссылку, которую Вы хотите начать отслеживать, "
@@ -74,7 +74,7 @@ public class TrackCommand implements Command {
             if (exceptionReasonName.equals("TgChatNotFoundException")) {
                 exceptionMessage = USER_NOT_REGISTERED_MESSAGE;
             } else if (exceptionReasonName.equals("LinkInChatAlreadyExistsException")) {
-                exceptionMessage = LINK_ALREADY_TRACK_MESSAGE;
+                exceptionMessage = LINK_ALREADY_TRACKED_MESSAGE;
             } else {
                 log.error("Error: {}", e.getApiErrorResponse().description());
                 exceptionMessage = UNEXPECTED_ERROR_MESSAGE;
