@@ -37,7 +37,7 @@ public class JooqLinksService implements LinksService {
 
         if (!linksTrackingsRepository.add(new LinksTrackings(tgChatId, link.getId()))) {
             throw new LinkInChatAlreadyExistsException();
-        };
+        }
 
         return new Link(link.getId(), URI.create(link.getUrl()), link.getLastCheckTime());
     }
