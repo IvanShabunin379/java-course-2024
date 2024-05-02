@@ -2,6 +2,7 @@ package edu.java.bot.configuration;
 
 import java.util.HashMap;
 import java.util.Map;
+import edu.java.dto.LinkUpdateRequest;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -14,12 +15,12 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 @Configuration
 public class KafkaUpdatesConsumerConfig {
     @Bean
-    ConcurrentKafkaListenerContainerFactory<Integer, String>
+    ConcurrentKafkaListenerContainerFactory<Long, LinkUpdateRequest>
     kafkaListenerContainerFactory(
-        ConsumerFactory<Integer, String> consumerFactory,
+        ConsumerFactory<Long, LinkUpdateRequest> consumerFactory,
         BotAppConfig config
     ) {
-        ConcurrentKafkaListenerContainerFactory<Integer, String> factory =
+        ConcurrentKafkaListenerContainerFactory<Long, LinkUpdateRequest> factory =
             new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setConsumerFactory(consumerFactory);
@@ -29,7 +30,7 @@ public class KafkaUpdatesConsumerConfig {
     }
 
     @Bean
-    public ConsumerFactory<Integer, String> consumerFactory(BotAppConfig config) {
+    public ConsumerFactory<Long, LinkUpdateRequest> consumerFactory(BotAppConfig config) {
         return new DefaultKafkaConsumerFactory<>(consumerProps(config.kafkaUpdatesConsumerConfig()));
     }
 

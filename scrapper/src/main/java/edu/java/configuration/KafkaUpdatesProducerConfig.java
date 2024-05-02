@@ -2,6 +2,7 @@ package edu.java.configuration;
 
 import java.util.HashMap;
 import java.util.Map;
+import edu.java.dto.LinkUpdateRequest;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.IntegerSerializer;
@@ -24,7 +25,7 @@ public class KafkaUpdatesProducerConfig {
     }
 
     @Bean
-    public ProducerFactory<Integer, String> producerFactory(ScrapperAppConfig config) {
+    public ProducerFactory<Long, LinkUpdateRequest> producerFactory(ScrapperAppConfig config) {
         return new DefaultKafkaProducerFactory<>(senderProps(config.kafkaUpdatesProducer()));
     }
 
@@ -45,8 +46,8 @@ public class KafkaUpdatesProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<Integer, String> kafkaTemplate(
-        ProducerFactory<Integer, String> producerFactory,
+    public KafkaTemplate<Long, LinkUpdateRequest> kafkaTemplate(
+        ProducerFactory<Long, LinkUpdateRequest> producerFactory,
         ScrapperAppConfig config
     ) {
         var kafkaTemplate = new KafkaTemplate<>(producerFactory);

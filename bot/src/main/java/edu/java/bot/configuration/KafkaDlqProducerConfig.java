@@ -2,6 +2,7 @@ package edu.java.bot.configuration;
 
 import java.util.HashMap;
 import java.util.Map;
+import edu.java.dto.LinkUpdateRequest;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.LongSerializer;
@@ -24,7 +25,7 @@ public class KafkaDlqProducerConfig {
     }
 
     @Bean
-    public ProducerFactory<Integer, String> producerFactory(BotAppConfig config) {
+    public ProducerFactory<Long, LinkUpdateRequest> producerFactory(BotAppConfig config) {
         return new DefaultKafkaProducerFactory<>(senderProps(config.kafkaDlqProducerConfig()));
     }
 
@@ -40,8 +41,8 @@ public class KafkaDlqProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<Integer, String> dlqKafkaTemplate(
-        ProducerFactory<Integer, String> producerFactory,
+    public KafkaTemplate<Long, LinkUpdateRequest> dlqKafkaTemplate(
+        ProducerFactory<Long, LinkUpdateRequest> producerFactory,
         BotAppConfig config
     ) {
         var kafkaTemplate = new KafkaTemplate<>(producerFactory);

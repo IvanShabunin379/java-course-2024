@@ -60,7 +60,7 @@ public class GitHubLinkUpdater implements LinkUpdater<GitHubResponse> {
                 tgChatsIds
             );
 
-            updatesSender.send(linkUpdateRequest);
+            updatesSender.sendLinkUpdate(linkUpdateRequest);
         }
     }
 

@@ -55,7 +55,7 @@ public class StackOverflowLinkUpdater implements LinkUpdater<StackOverflowAnswer
                 tgChatsIds
             );
 
-            updatesSender.send(linkUpdateRequest);
+            updatesSender.sendLinkUpdate(linkUpdateRequest);
         }
     }
 
