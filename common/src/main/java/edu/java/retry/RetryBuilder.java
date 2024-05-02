@@ -12,8 +12,7 @@ import reactor.util.retry.Retry;
 public class RetryBuilder {
     private int maxAttempts = 0;
     private Duration duration = Duration.ZERO;
-    private Set<Integer> statusCodes = Set.of(
-        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+    private Set<Integer> statusCodes = Set.of(HttpStatus.INTERNAL_SERVER_ERROR.value(),
         HttpStatus.BAD_GATEWAY.value(),
         HttpStatus.SERVICE_UNAVAILABLE.value()
     );
