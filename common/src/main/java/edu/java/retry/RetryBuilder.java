@@ -4,6 +4,7 @@ import edu.java.exceptions.ServerErrorException;
 import java.time.Duration;
 import java.util.Set;
 import org.reactivestreams.Publisher;
+import org.springframework.http.HttpStatus;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
@@ -11,8 +12,11 @@ import reactor.util.retry.Retry;
 public class RetryBuilder {
     private int maxAttempts = 0;
     private Duration duration = Duration.ZERO;
-    @SuppressWarnings("MagicNumber")
-    private Set<Integer> statusCodes = Set.of(500, 502, 503);
+    private Set<Integer> statusCodes = Set.of(
+        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+        HttpStatus.BAD_GATEWAY.value(),
+        HttpStatus.SERVICE_UNAVAILABLE.value()
+    );
 
     public RetryBuilder withMaxAttempts(int maxAttempts) {
         if (maxAttempts <= 0) {

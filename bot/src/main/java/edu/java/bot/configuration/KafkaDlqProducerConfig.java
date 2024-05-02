@@ -1,5 +1,6 @@
 package edu.java.bot.configuration;
 
+import edu.java.dto.LinkUpdateRequest;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.admin.NewTopic;
@@ -24,7 +25,7 @@ public class KafkaDlqProducerConfig {
     }
 
     @Bean
-    public ProducerFactory<Integer, String> producerFactory(BotAppConfig config) {
+    public ProducerFactory<Long, LinkUpdateRequest> producerFactory(BotAppConfig config) {
         return new DefaultKafkaProducerFactory<>(senderProps(config.kafkaDlqProducerConfig()));
     }
 
@@ -40,8 +41,8 @@ public class KafkaDlqProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<Integer, String> dlqKafkaTemplate(
-        ProducerFactory<Integer, String> producerFactory,
+    public KafkaTemplate<Long, LinkUpdateRequest> dlqKafkaTemplate(
+        ProducerFactory<Long, LinkUpdateRequest> producerFactory,
         BotAppConfig config
     ) {
         var kafkaTemplate = new KafkaTemplate<>(producerFactory);

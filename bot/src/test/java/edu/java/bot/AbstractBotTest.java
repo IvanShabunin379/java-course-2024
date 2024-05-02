@@ -1,5 +1,6 @@
 package edu.java.bot;
 
+import edu.java.bot.client.ScrapperClient;
 import edu.java.bot.service.TelegramBot;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,5 +25,9 @@ public abstract class AbstractBotTest {
         when(update.getMessage()).thenReturn(message);
 
         return update;
+    }
+
+    protected ScrapperClient mockScrapperClient() {
+        return mock(ScrapperClient.class);
     }
 }

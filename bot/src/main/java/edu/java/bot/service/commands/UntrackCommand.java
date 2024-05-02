@@ -26,7 +26,7 @@ public class UntrackCommand implements Command {
 
         Для начала работы с ботом необходимо вызвать команду /start.
         """;
-    private static final String LINK_ALREADY_UNTRACK_MESSAGE = "Данная ссылка отсутствует в списке отслеживаемых.";
+    private static final String LINK_ALREADY_UNTRACKED_MESSAGE = "Данная ссылка отсутствует в списке отслеживаемых.";
     private static final String UNEXPECTED_ERROR_MESSAGE = "Прошу прощения, произошла непредвиденная ошибка!";
     private static final String ONLY_COMMAND_NAME_MESSAGE =
         "Для успешного выполнения команды /untrack, вводите ссылку, которую Вы хотите прекратить отслеживать, "
@@ -78,7 +78,7 @@ public class UntrackCommand implements Command {
                 exceptionMessage = USER_NOT_REGISTERED_MESSAGE;
             } else if (exceptionReasonName.equals("LinkNotFoundException")
                 || exceptionReasonName.equals("LinkInChatNotFoundException")) {
-                exceptionMessage = LINK_ALREADY_UNTRACK_MESSAGE;
+                exceptionMessage = LINK_ALREADY_UNTRACKED_MESSAGE;
             } else {
                 log.error("Error: {}", e.getApiErrorResponse().description());
                 exceptionMessage = UNEXPECTED_ERROR_MESSAGE;
