@@ -1,8 +1,8 @@
 package edu.java.bot.configuration;
 
+import edu.java.dto.LinkUpdateRequest;
 import java.util.HashMap;
 import java.util.Map;
-import edu.java.dto.LinkUpdateRequest;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.LongSerializer;
