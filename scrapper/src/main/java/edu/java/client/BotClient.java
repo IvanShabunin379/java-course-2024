@@ -1,12 +1,13 @@
 package edu.java.client;
 
 import edu.java.dto.LinkUpdateRequest;
+import edu.java.service.link_updates_sender.LinkUpdatesSender;
 import edu.java.utils.ApiErrorHandler;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.util.retry.Retry;
 
-public class BotClient {
+public class BotClient implements LinkUpdatesSender {
     private static final String BASE_URL = "http://localhost:8090";
 
     private final WebClient webClient;
