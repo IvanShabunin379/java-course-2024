@@ -37,7 +37,9 @@ public class JpaLinksService implements LinksService {
                 return linksRepository.save(newLink);
             });
 
-        if (tgChat.getLinks() != null && tgChat.getLinks().stream().anyMatch(linkEntity -> linkEntity.getUrl().equals(url))) {
+        if (tgChat.getLinks() != null
+            && tgChat.getLinks().stream()
+            .anyMatch(linkEntity -> linkEntity.getUrl().equals(url))) {
             throw new LinkInChatAlreadyExistsException();
         }
 
