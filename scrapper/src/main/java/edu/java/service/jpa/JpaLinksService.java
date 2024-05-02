@@ -34,7 +34,6 @@ public class JpaLinksService implements LinksService {
                 LinkEntity newLink = new LinkEntity();
                 newLink.setUrl(url);
                 newLink.setLastCheckedTime(OffsetDateTime.now());
-                newLink.setTgChats(new ArrayList<>(List.of(tgChat)));
                 return linksRepository.save(newLink);
             });
 
@@ -42,7 +41,11 @@ public class JpaLinksService implements LinksService {
             throw new LinkInChatAlreadyExistsException();
         }
 
-        link.getTgChats().add(tgChat);
+        if (link.getTgChats() == null) {
+            link.setTgChats(new ArrayList<>(List.of(tgChat)));
+        } else {
+            link.getTgChats().add(tgChat);
+        }
         linksRepository.save(link);
 
         if (tgChat.getLinks() == null) {

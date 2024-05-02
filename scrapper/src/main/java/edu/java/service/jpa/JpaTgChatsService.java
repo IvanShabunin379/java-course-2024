@@ -39,6 +39,17 @@ public class JpaTgChatsService implements TgChatsService {
         TgChatEntity unregistredChat = tgChatsRepository.findById(tgChatId)
             .orElseThrow(TgChatNotFoundException::new);
 
+        if (unregistredChat.getLinks() != null) {
+            for (LinkEntity trackedLink : unregistredChat.getLinks()) {
+                trackedLink.getTgChats().remove(unregistredChat);
+                linksRepository.save(trackedLink);
+
+                if (trackedLink.getTgChats().isEmpty()) {
+                    linksRepository.delete(trackedLink);
+                }
+            }
+        }
+
         tgChatsRepository.delete(unregistredChat);
     }
 
