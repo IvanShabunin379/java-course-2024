@@ -37,7 +37,7 @@ app:
     batch-size: 100_000
     max-in-flight-per-connection: 5
     enable-idempotence: true
-  use-queue: true
+  use-queue: false
 
 spring:
   application:
