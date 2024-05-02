@@ -35,7 +35,7 @@ public class JpaLinksRepositoryTest extends IntegrationTest {
 
     @AfterEach
     public void tearDown() {
-        linksRepository.delete(testLink);
+        linksRepository.deleteAll();
     }
 
     @Test

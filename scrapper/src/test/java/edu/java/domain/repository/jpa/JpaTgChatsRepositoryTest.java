@@ -32,7 +32,7 @@ public class JpaTgChatsRepositoryTest extends IntegrationTest {
 
     @AfterEach
     public void tearDown() {
-        tgChatsRepository.delete(testTgChat);
+        tgChatsRepository.deleteAll();
     }
 
     @Test

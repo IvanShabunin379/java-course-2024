@@ -13,6 +13,7 @@ import edu.java.service.exceptions.TgChatNotFoundException;
 import jakarta.transaction.Transactional;
 import java.net.URI;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Limit;
@@ -21,7 +22,6 @@ import org.springframework.data.domain.Limit;
 @RequiredArgsConstructor
 public class JpaLinksService implements LinksService {
     private final JpaLinksRepository linksRepository;
-
     private final JpaTgChatsRepository tgChatsRepository;
 
     @Override
@@ -34,14 +34,22 @@ public class JpaLinksService implements LinksService {
                 LinkEntity newLink = new LinkEntity();
                 newLink.setUrl(url);
                 newLink.setLastCheckedTime(OffsetDateTime.now());
+                newLink.setTgChats(new ArrayList<>(List.of(tgChat)));
                 return linksRepository.save(newLink);
             });
 
-        if (tgChat.getLinks().stream().anyMatch(linkEntity -> linkEntity.getUrl().equals(url))) {
+        if (tgChat.getLinks() != null && tgChat.getLinks().stream().anyMatch(linkEntity -> linkEntity.getUrl().equals(url))) {
             throw new LinkInChatAlreadyExistsException();
         }
 
-        tgChat.getLinks().add(link);
+        link.getTgChats().add(tgChat);
+        linksRepository.save(link);
+
+        if (tgChat.getLinks() == null) {
+            tgChat.setLinks(new ArrayList<>(List.of(link)));
+        } else {
+            tgChat.getLinks().add(link);
+        }
         tgChatsRepository.save(tgChat);
 
         return new Link(link.getId(), link.getUrl(), link.getLastCheckedTime());
