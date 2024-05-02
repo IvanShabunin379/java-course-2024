@@ -37,6 +37,8 @@ services:
       - 22181:2181
     volumes:
       - zookeeper-data:/var/lib/zookeeper/data
+    networks:
+      - backend
 
   kafka:
     image: confluentinc/cp-zookeeper:7.4.4
@@ -53,6 +55,8 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     volumes:
       - kafka-data:/var/lib/kafka/data
+    networks:
+      - backend
 
   prometheus:
     image: prom/prometheus:v2.51.2
