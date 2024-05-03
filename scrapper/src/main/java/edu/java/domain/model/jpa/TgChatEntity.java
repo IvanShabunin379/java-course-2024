@@ -33,9 +33,9 @@ public class TgChatEntity {
 
     @Override
     public String toString() {
-        return "TgChatEntity{" +
-            "id=" + id +
-            ", createdAt=" + createdAt +
-            '}';
+        return "TgChatEntity{"
+            + "id=" + id
+            + ", createdAt=" + createdAt
+            + '}';
     }
 }

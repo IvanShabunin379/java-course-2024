@@ -36,10 +36,10 @@ public class LinkEntity {
 
     @Override
     public String toString() {
-        return "LinkEntity{" +
-            "id=" + id +
-            ", url=" + url +
-            ", lastCheckedTime=" + lastCheckedTime +
-            '}';
+        return "LinkEntity{"
+            + "id=" + id
+            + ", url=" + url
+            + ", lastCheckedTime=" + lastCheckedTime
+            + '}';
     }
 }
