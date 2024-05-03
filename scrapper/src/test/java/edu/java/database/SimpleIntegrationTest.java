@@ -11,6 +11,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import org.assertj.core.api.Assertions;
+import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class SimpleIntegrationTest extends IntegrationTest {
@@ -36,6 +37,7 @@ public class SimpleIntegrationTest extends IntegrationTest {
     }
 
     @Test
+    @Transactional
     @SneakyThrows
     public void databaseShouldWorkProperlyWithBasicDatabaseOperations() {
         Connection connection = dataSource.getConnection();
@@ -54,6 +56,7 @@ public class SimpleIntegrationTest extends IntegrationTest {
     }
 
     @Test
+    @Transactional
     @SneakyThrows
     public void databaseShouldWorkProperlyWithSchemaChanges() {
         Connection connection = dataSource.getConnection();
