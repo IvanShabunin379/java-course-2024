@@ -13,14 +13,14 @@ public class JpaTgChatsServiceTest extends AbstractJpaServiceTest {
     @Test
     public void registerShouldAddRegisteredChatToTgChatsRepository() {
         assertThat(tgChatsRepository.findAll()).hasSize(1);
-        //assertThat(tgChatsRepository.existsById(REGISTERED_TG_CHAT_ID)).isTrue();
-        //assertThat(tgChatsRepository.findById(REGISTERED_TG_CHAT_ID).orElse(null)).isNotNull();
+        assertThat(tgChatsRepository.existsById(REGISTERED_TG_CHAT_ID)).isTrue();
+        assertThat(tgChatsRepository.findById(REGISTERED_TG_CHAT_ID).orElse(null)).isNotNull();
 
         tgChatsService.register(TEST_TG_CHAT_ID);
 
         assertThat(tgChatsRepository.findAll()).hasSize(2);
-        //assertThat(tgChatsRepository.existsById(TEST_TG_CHAT_ID)).isTrue();
-        //assertThat(tgChatsRepository.findById(TEST_TG_CHAT_ID).orElse(null)).isNotNull();
+        assertThat(tgChatsRepository.existsById(TEST_TG_CHAT_ID)).isTrue();
+        assertThat(tgChatsRepository.findById(TEST_TG_CHAT_ID).orElse(null)).isNotNull();
     }
 
     @Test
@@ -32,14 +32,14 @@ public class JpaTgChatsServiceTest extends AbstractJpaServiceTest {
     @Test
     public void unregisterShouldDeleteChatFromTgChatsRepository() {
         assertThat(tgChatsRepository.findAll()).hasSize(1);
-        //assertThat(tgChatsRepository.existsById(REGISTERED_TG_CHAT_ID)).isTrue();
-        //assertThat(tgChatsRepository.findById(REGISTERED_TG_CHAT_ID).orElse(null)).isNotNull();
+        assertThat(tgChatsRepository.existsById(REGISTERED_TG_CHAT_ID)).isTrue();
+        assertThat(tgChatsRepository.findById(REGISTERED_TG_CHAT_ID).orElse(null)).isNotNull();
 
         tgChatsService.unregister(REGISTERED_TG_CHAT_ID);
 
         assertThat(tgChatsRepository.findAll()).isEmpty();
-        //assertThat(tgChatsRepository.existsById(REGISTERED_TG_CHAT_ID)).isFalse();
-        //assertThat(tgChatsRepository.findById(REGISTERED_TG_CHAT_ID).orElse(null)).isNull();
+        assertThat(tgChatsRepository.existsById(REGISTERED_TG_CHAT_ID)).isFalse();
+        assertThat(tgChatsRepository.findById(REGISTERED_TG_CHAT_ID).orElse(null)).isNull();
     }
 
     @Test

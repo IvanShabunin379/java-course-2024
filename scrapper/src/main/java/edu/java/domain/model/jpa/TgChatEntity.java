@@ -30,4 +30,12 @@ public class TgChatEntity {
         joinColumns = @JoinColumn(name = "tg_chat_id"),
         inverseJoinColumns = @JoinColumn(name = "link_id"))
     private List<LinkEntity> links;
+
+    @Override
+    public String toString() {
+        return "TgChatEntity{" +
+            "id=" + id +
+            ", createdAt=" + createdAt +
+            '}';
+    }
 }

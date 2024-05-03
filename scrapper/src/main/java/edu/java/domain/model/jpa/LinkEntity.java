@@ -33,4 +33,13 @@ public class LinkEntity {
 
     @ManyToMany(mappedBy = "links")
     List<TgChatEntity> tgChats;
+
+    @Override
+    public String toString() {
+        return "LinkEntity{" +
+            "id=" + id +
+            ", url=" + url +
+            ", lastCheckedTime=" + lastCheckedTime +
+            '}';
+    }
 }
