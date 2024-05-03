@@ -14,7 +14,7 @@ public class JpaTgChatsServiceTest extends AbstractJpaServiceTest {
     public void registerShouldAddRegisteredChatToTgChatsRepository() {
         assertThat(tgChatsRepository.findAll()).hasSize(1);
         assertThat(tgChatsRepository.existsById(REGISTERED_TG_CHAT_ID)).isTrue();
-        //assertThat(tgChatsRepository.findById(REGISTERED_TG_CHAT_ID).orElse(null)).isNotNull();
+        assertThat(tgChatsRepository.findById(REGISTERED_TG_CHAT_ID).orElse(null)).isNotNull();
 
         tgChatsService.register(TEST_TG_CHAT_ID);
 
