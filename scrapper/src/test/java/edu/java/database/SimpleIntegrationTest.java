@@ -11,7 +11,6 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import org.assertj.core.api.Assertions;
-import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class SimpleIntegrationTest extends IntegrationTest {
@@ -26,6 +25,8 @@ public class SimpleIntegrationTest extends IntegrationTest {
             id BIGINT PRIMARY KEY
         );
         """;
+    private final static String DELETE_SQL_QUERY = "DELETE FROM tg_chats";
+    private final static String DROP_SQL_QUERY = "DROP TABLE users";
 
     @BeforeAll
     public static void getDataSource() {
@@ -37,7 +38,6 @@ public class SimpleIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @Transactional
     @SneakyThrows
     public void databaseShouldWorkProperlyWithBasicDatabaseOperations() {
         Connection connection = dataSource.getConnection();
@@ -53,10 +53,11 @@ public class SimpleIntegrationTest extends IntegrationTest {
         }
 
         Assertions.assertThat(result.toString()).isEqualTo(expected);
+
+        statement.executeUpdate(DELETE_SQL_QUERY);
     }
 
     @Test
-    @Transactional
     @SneakyThrows
     public void databaseShouldWorkProperlyWithSchemaChanges() {
         Connection connection = dataSource.getConnection();
@@ -70,5 +71,7 @@ public class SimpleIntegrationTest extends IntegrationTest {
         );
 
         assertThat(tablesResultSet.next()).isTrue();
+
+        statement.executeUpdate(DROP_SQL_QUERY);
     }
 }
