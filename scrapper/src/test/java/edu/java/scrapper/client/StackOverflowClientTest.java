@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class StackOverflowClientTest extends AbstractClientTest {
     private static final WireMockServer server = new WireMockServer(wireMockConfig().dynamicPort());
 
-    private final StackOverflowClient stackOverflowClient = new StackOverflowClient(server.baseUrl());
+    private final StackOverflowClient stackOverflowClient = new StackOverflowClient(server.baseUrl(), DEFAULT_RETRY);
 
     @BeforeAll
     public static void beforeAll() {
@@ -36,16 +36,17 @@ public class StackOverflowClientTest extends AbstractClientTest {
     @SneakyThrows
     public void shouldGetGitHubResponses() {
         server.stubFor(get(urlPathMatching("/questions/\\d+/answers"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBody(jsonToString("src/test/resources/stackoverflow.json"))
-            )
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(jsonToString("src/test/resources/stackoverflow.json"))
+                )
         );
 
         StackOverflowResponse response = stackOverflowClient.getQuestionUpdates(
-            1L,
-            OffsetDateTime.of(2024, 3, 7, 8, 0, 0, 0, ZoneOffset.UTC)
+                1L,
+                OffsetDateTime.of(2024, 3, 7, 8, 0, 0, 0, ZoneOffset.UTC),
+                OffsetDateTime.now()
         );
         List<StackOverflowAnswerInfo> items = response.items();
 

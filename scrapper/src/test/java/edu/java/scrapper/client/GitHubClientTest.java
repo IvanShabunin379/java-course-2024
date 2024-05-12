@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GitHubClientTest extends AbstractClientTest {
     private static final WireMockServer server = new WireMockServer(wireMockConfig().dynamicPort());
 
-    private final GitHubClient githubClient = new GitHubClient(server.baseUrl());
+    private final GitHubClient githubClient = new GitHubClient(server.baseUrl(), DEFAULT_RETRY);
 
     @BeforeAll
     public static void beforeAll() {
@@ -35,17 +35,18 @@ public class GitHubClientTest extends AbstractClientTest {
     @SneakyThrows
     public void shouldGetGitHubResponses() {
         server.stubFor(get(urlPathMatching("/repos/owner/repository/activity"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBody(jsonToString("src/test/resources/github.json"))
-            )
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(jsonToString("src/test/resources/github.json"))
+                )
         );
 
         List<GitHubResponse> responses = githubClient.getRepositoryUpdates(
-            "owner",
-            "repository",
-            OffsetDateTime.of(2024, 3, 7, 20, 5, 0, 0, ZoneOffset.UTC)
+                "owner",
+                "repository",
+                OffsetDateTime.of(2024, 3, 7, 20, 5, 0, 0, ZoneOffset.UTC),
+                OffsetDateTime.now()
         );
 
         assertThat(responses).hasSize(2);
