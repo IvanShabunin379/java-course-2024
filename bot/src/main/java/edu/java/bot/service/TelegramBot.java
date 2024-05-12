@@ -1,6 +1,7 @@
 package edu.java.bot.service;
 
-import edu.java.bot.configuration.BotConfig;
+import edu.java.bot.configuration.BotAppConfig;
+import edu.java.bot.metric.ProcessedTelegramMessagesCounter;
 import edu.java.bot.service.commands.Command;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +18,18 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Slf4j
 @SuppressWarnings("MultipleStringLiterals")
 public class TelegramBot extends TelegramLongPollingBot {
-    private final BotConfig config;
+    private final BotAppConfig config;
     private final List<Command> commands;
+    private final ProcessedTelegramMessagesCounter processedMessagesCounter;
 
-    public TelegramBot(BotConfig config, List<Command> commands) {
+    public TelegramBot(
+        BotAppConfig config,
+        List<Command> commands,
+        ProcessedTelegramMessagesCounter processedMessagesCounter
+    ) {
         this.config = config;
         this.commands = commands;
+        this.processedMessagesCounter = processedMessagesCounter;
 
         try {
             List<BotCommand> botCommands = commands.stream()
@@ -62,6 +69,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             } catch (TelegramApiException e) {
                 log.error("Error occurred " + e.getMessage(), e);
             }
+
+            processedMessagesCounter.incrementCounter();
         }
     }
 

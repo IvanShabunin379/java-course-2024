@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class StackOverflowClientTest extends AbstractClientTest {
     private static final WireMockServer server = new WireMockServer(wireMockConfig().dynamicPort());
 
-    private final StackOverflowClient stackOverflowClient = new StackOverflowClient(server.baseUrl());
+    private final StackOverflowClient stackOverflowClient = new StackOverflowClient(server.baseUrl(), DEFAULT_RETRY);
 
     @BeforeAll
     public static void beforeAll() {

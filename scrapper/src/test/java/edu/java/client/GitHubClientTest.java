@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GitHubClientTest extends AbstractClientTest {
     private static final WireMockServer server = new WireMockServer(wireMockConfig().dynamicPort());
 
-    private final GitHubClient githubClient = new GitHubClient(server.baseUrl());
+    private final GitHubClient githubClient = new GitHubClient(server.baseUrl(), DEFAULT_RETRY);
 
     @BeforeAll
     public static void beforeAll() {

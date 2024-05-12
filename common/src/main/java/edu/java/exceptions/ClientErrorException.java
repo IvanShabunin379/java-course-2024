@@ -4,10 +4,10 @@ import edu.java.dto.ApiErrorResponse;
 import lombok.Getter;
 
 @Getter
-public class ClientResponseException extends RuntimeException {
+public class ClientErrorException extends RuntimeException {
     private final ApiErrorResponse apiErrorResponse;
 
-    public ClientResponseException(ApiErrorResponse apiErrorResponse) {
+    public ClientErrorException(ApiErrorResponse apiErrorResponse) {
         this.apiErrorResponse = apiErrorResponse;
     }
 }
