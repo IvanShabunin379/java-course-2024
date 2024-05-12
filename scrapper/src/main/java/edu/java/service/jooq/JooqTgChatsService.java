@@ -1,21 +1,19 @@
 package edu.java.service.jooq;
 
 import edu.java.domain.jooq.tables.pojos.Links;
-import edu.java.domain.model.TgChat;
+import edu.java.domain.model.jdbc.TgChat;
 import edu.java.domain.repository.jooq.JooqLinksRepository;
 import edu.java.domain.repository.jooq.JooqLinksTrackingsRepository;
 import edu.java.domain.repository.jooq.JooqTgChatsRepository;
-import edu.java.exceptions.LinkNotFoundException;
-import edu.java.exceptions.TgChatAlreadyExistsException;
-import edu.java.exceptions.TgChatNotFoundException;
 import edu.java.service.TgChatsService;
+import edu.java.service.exceptions.LinkNotFoundException;
+import edu.java.service.exceptions.TgChatAlreadyExistsException;
+import edu.java.service.exceptions.TgChatNotFoundException;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @Transactional
 @RequiredArgsConstructor
 public class JooqTgChatsService implements TgChatsService {

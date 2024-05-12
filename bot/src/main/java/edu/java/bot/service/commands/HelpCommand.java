@@ -9,10 +9,12 @@ public class HelpCommand implements Command {
     @SuppressWarnings("LineLength")
     private static final String HELP_MESSAGE = """
         Данный бот предоставляет единый способ отслеживания обновлений для множества интернет-ресурсов.
+        На данный момент отслеживание поддерживается только для вопросов со StackOverflow и репозиториев GitHub.
+
         Вы можете вызвать необходимую команду с помощью меню, находящегося в левом нижнем углу, или с помощью ввода команды с клавиатуры.
 
         Список команд:
-        /start - зарегистрировать пользователя.
+        /start - начать работу с данным ботом.
 
         /help - вывести окно с командами.
 
@@ -37,7 +39,7 @@ public class HelpCommand implements Command {
 
     @Override
     public SendMessage handle(Update update) {
-        long chatId = update.getMessage().getChat().getId();
+        long chatId = update.getMessage().getChatId();
         return new SendMessage(String.valueOf(chatId), HELP_MESSAGE);
     }
 }

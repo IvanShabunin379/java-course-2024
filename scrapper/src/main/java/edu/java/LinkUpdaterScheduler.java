@@ -1,6 +1,6 @@
 package edu.java;
 
-import edu.java.domain.model.Link;
+import edu.java.domain.model.jdbc.Link;
 import edu.java.responses.GitHubResponse;
 import edu.java.responses.StackOverflowResponse.StackOverflowAnswerInfo;
 import edu.java.service.LinksService;
@@ -17,7 +17,7 @@ import static edu.java.utils.LinkTypeChecker.checkLinkType;
 @Component
 @RequiredArgsConstructor
 public class LinkUpdaterScheduler {
-    public static final int BATCH_SIZE = 50;
+    public static final int BATCH_SIZE = 10;
 
     private final GitHubLinkUpdater gitHubLinkUpdater;
     private final StackOverflowLinkUpdater stackOverflowLinkUpdater;
@@ -30,7 +30,7 @@ public class LinkUpdaterScheduler {
         List<Link> uncheckedLinksForLongestTime = linksService.findUncheckedLinksForLongestTime(BATCH_SIZE);
 
         for (Link link : uncheckedLinksForLongestTime) {
-            switch (checkLinkType(link.url())) {
+            switch (checkLinkType(link.getUrl())) {
                 case GITHUB_REPOSITORY -> {
                     List<GitHubResponse> updates = gitHubLinkUpdater.getUpdatesForLink(link);
                     gitHubLinkUpdater.sendUpdatesToBot(link, updates);
@@ -39,7 +39,7 @@ public class LinkUpdaterScheduler {
                     List<StackOverflowAnswerInfo> updates = stackOverflowLinkUpdater.getUpdatesForLink(link);
                     stackOverflowLinkUpdater.sendUpdatesToBot(link, updates);
                 }
-                default -> log.warn("Unknown type of link: {}", link.url());
+                default -> log.warn("Unknown type of link: {}", link.getUrl());
             }
         }
     }

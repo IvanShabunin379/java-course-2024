@@ -3,23 +3,21 @@ package edu.java.service.jooq;
 import edu.java.domain.jooq.tables.pojos.Links;
 import edu.java.domain.jooq.tables.pojos.LinksTrackings;
 import edu.java.domain.jooq.tables.pojos.TgChats;
-import edu.java.domain.model.Link;
+import edu.java.domain.model.jdbc.Link;
 import edu.java.domain.repository.jooq.JooqLinksRepository;
 import edu.java.domain.repository.jooq.JooqLinksTrackingsRepository;
 import edu.java.domain.repository.jooq.JooqTgChatsRepository;
-import edu.java.exceptions.LinkInChatAlreadyExistsException;
-import edu.java.exceptions.LinkInChatNotFoundException;
-import edu.java.exceptions.LinkNotFoundException;
-import edu.java.exceptions.TgChatNotFoundException;
 import edu.java.service.LinksService;
+import edu.java.service.exceptions.LinkInChatAlreadyExistsException;
+import edu.java.service.exceptions.LinkInChatNotFoundException;
+import edu.java.service.exceptions.LinkNotFoundException;
+import edu.java.service.exceptions.TgChatNotFoundException;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @Transactional
 @RequiredArgsConstructor
 public class JooqLinksService implements LinksService {

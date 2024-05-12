@@ -2,11 +2,11 @@ package edu.java.controller;
 
 import edu.java.dto.ApiErrorResponse;
 import edu.java.exceptions.BadRequestException;
-import edu.java.exceptions.LinkInChatAlreadyExistsException;
-import edu.java.exceptions.LinkInChatNotFoundException;
-import edu.java.exceptions.LinkNotFoundException;
-import edu.java.exceptions.TgChatAlreadyExistsException;
-import edu.java.exceptions.TgChatNotFoundException;
+import edu.java.service.exceptions.LinkInChatAlreadyExistsException;
+import edu.java.service.exceptions.LinkInChatNotFoundException;
+import edu.java.service.exceptions.LinkNotFoundException;
+import edu.java.service.exceptions.TgChatAlreadyExistsException;
+import edu.java.service.exceptions.TgChatNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,7 +32,7 @@ public class ScrapperControllerAdvice {
 
     @ExceptionHandler(LinkInChatNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleLinkInChatNotFoundException(LinkInChatNotFoundException e) {
-        return handleException(e, HttpStatus.NOT_FOUND, "This link does not already tracked..");
+        return handleException(e, HttpStatus.NOT_FOUND, "This link does not already tracked.");
     }
 
     @ExceptionHandler(TgChatAlreadyExistsException.class)

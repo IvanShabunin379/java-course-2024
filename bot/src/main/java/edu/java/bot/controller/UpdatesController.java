@@ -1,5 +1,6 @@
 package edu.java.bot.controller;
 
+import edu.java.bot.service.UpdatesService;
 import edu.java.dto.ApiErrorResponse;
 import edu.java.dto.LinkUpdateRequest;
 import edu.java.utils.ValidationUtils;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/updates")
 @Slf4j
+@RequiredArgsConstructor
 @ApiResponses({
     @ApiResponse(
         responseCode = "400",
@@ -27,6 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
     )
 })
 public class UpdatesController {
+    private final UpdatesService updatesService;
+
     @Operation(summary = "Отправить обновление")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Обновление обработано"),
@@ -55,10 +60,7 @@ public class UpdatesController {
             ValidationUtils.handleBindingResultErrors(bindingResult);
         }
 
-        // TODO: добавить проверку на существование чата
-        // TODO: добавить проверку на существование ссылки
-        // TODO: добавить проверку на то, что ссылка находится хотя бы в одном чате
-
+        updatesService.sendLinkUpdate(linkUpdateRequest.description(), linkUpdateRequest.tgChatIds());
         log.info("POST: Link Update for {} has been processed successfully.", linkUpdateRequest.url());
     }
 }

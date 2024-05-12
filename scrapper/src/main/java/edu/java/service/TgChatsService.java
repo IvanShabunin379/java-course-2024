@@ -1,6 +1,6 @@
 package edu.java.service;
 
-import edu.java.domain.model.TgChat;
+import edu.java.domain.model.jdbc.TgChat;
 import java.net.URI;
 import java.util.List;
 
