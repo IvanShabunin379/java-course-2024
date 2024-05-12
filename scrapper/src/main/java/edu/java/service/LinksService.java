@@ -1,6 +1,6 @@
 package edu.java.service;
 
-import edu.java.domain.model.Link;
+import edu.java.domain.model.jdbc.Link;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;

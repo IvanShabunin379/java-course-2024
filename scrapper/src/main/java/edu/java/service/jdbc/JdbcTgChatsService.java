@@ -1,22 +1,19 @@
 package edu.java.service.jdbc;
 
-import edu.java.domain.model.Link;
-import edu.java.domain.model.TgChat;
+import edu.java.domain.model.jdbc.Link;
+import edu.java.domain.model.jdbc.TgChat;
 import edu.java.domain.repository.jdbc.JdbcLinksRepository;
 import edu.java.domain.repository.jdbc.JdbcLinksTrackingsRepository;
 import edu.java.domain.repository.jdbc.JdbcTgChatsRepository;
-import edu.java.exceptions.LinkNotFoundException;
-import edu.java.exceptions.TgChatAlreadyExistsException;
-import edu.java.exceptions.TgChatNotFoundException;
 import edu.java.service.TgChatsService;
+import edu.java.service.exceptions.LinkNotFoundException;
+import edu.java.service.exceptions.TgChatAlreadyExistsException;
+import edu.java.service.exceptions.TgChatNotFoundException;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @Transactional
 @RequiredArgsConstructor
 public class JdbcTgChatsService implements TgChatsService {
@@ -26,9 +23,7 @@ public class JdbcTgChatsService implements TgChatsService {
 
     @Override
     public void register(long tgChatId) {
-        try {
-            tgChatsRepository.add(tgChatId);
-        } catch (DataAccessException e) {
+        if (!tgChatsRepository.add(tgChatId)) {
             throw new TgChatAlreadyExistsException();
         }
     }
@@ -42,10 +37,10 @@ public class JdbcTgChatsService implements TgChatsService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<TgChat> listAll(URI linkUri) {
-        Link link = linksRepository.findByUrl(linkUri)
+    public List<TgChat> listAll(URI linkUrl) {
+        Link link = linksRepository.findByUrl(linkUrl)
             .orElseThrow(LinkNotFoundException::new);
 
-        return linksTrackingsRepository.findAllTgChatsByLink(link.id());
+        return linksTrackingsRepository.findAllTgChatsByLink(link.getId());
     }
 }

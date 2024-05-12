@@ -1,6 +1,6 @@
 package edu.java.service.link_updater;
 
-import edu.java.domain.model.Link;
+import edu.java.domain.model.jdbc.Link;
 import java.util.List;
 
 public interface LinkUpdater<T> {

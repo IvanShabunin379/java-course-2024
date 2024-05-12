@@ -1,8 +1,43 @@
 app:
+  database-access-type: jpa
   scheduler:
     enable: true
-    interval: 10s
-    force-check-delay: 10s
+    interval: 100s
+    force-check-delay: 50s
+  git-hub-client-retry:
+    max-attempts: 3
+    duration: 2s
+    strategy: exponential
+    status-codes:
+      - 500
+      - 502
+      - 503
+  stack-overflow-client-retry:
+    max-attempts: 3
+    duration: 2s
+    strategy: exponential
+    status-codes:
+      - 500
+      - 502
+      - 503
+  bot-client-retry:
+    max-attempts: 3
+    duration: 2s
+    strategy: exponential
+    status-codes:
+      - 500
+      - 502
+      - 503
+  kafka-updates-producer:
+    topic-name: link_updates
+    bootstrap-servers: localhost:29092
+    acks-mode: 1
+    delivery-timeout: 60s
+    linger-ms: 12_000
+    batch-size: 100_000
+    max-in-flight-per-connection: 5
+    enable-idempotence: true
+  use-queue: false
 
 spring:
   application:
@@ -14,6 +49,14 @@ spring:
     driver-class-name: org.postgresql.Driver
   liquibase:
     enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: false
 
 server:
   port: 8080
@@ -27,3 +70,38 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui
+
+# Конфигурация Rate limiting
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: buckets
+      url: .*
+      http-status-code: TOO_MANY_REQUESTS
+      http-response-body: "{ \"status\": 429, \"error\": \"Too Many Requests\", \"message\": \"You have exhausted your API Request Quota\" }"
+      rate-limits:
+        - cache-key: getRemoteAddr()
+          bandwidths:
+            - capacity: 100
+              refill-capacity: 20
+              time: 1
+              unit: minutes
+              initial-capacity: 80
+              refill-speed: interval
+
+management:
+  server:
+    port: 8081
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include:
+          - info
+          - health
+          - prometheus
+      path-mapping:
+        prometheus: /metrics
+  metrics:
+    tags:
+      application: ${spring.application.name}

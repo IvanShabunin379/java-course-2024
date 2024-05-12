@@ -1,11 +1,12 @@
 package edu.java.controller;
 
-import edu.java.domain.model.Link;
+import edu.java.domain.model.jdbc.Link;
 import edu.java.dto.AddLinkRequest;
 import edu.java.dto.ApiErrorResponse;
 import edu.java.dto.LinkResponse;
 import edu.java.dto.ListLinksResponse;
 import edu.java.dto.RemoveLinkRequest;
+import edu.java.exceptions.BadRequestException;
 import edu.java.service.LinksService;
 import edu.java.utils.ValidationUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,17 +54,14 @@ public class LinksController {
         )
     })
     @GetMapping
-    public ListLinksResponse getLinks(
-        @RequestHeader("Tg-Chat-Id") @Positive long chatId,
-        BindingResult bindingResult
-    ) {
-        if (bindingResult.hasErrors()) {
-            ValidationUtils.handleBindingResultErrors(bindingResult);
+    public ListLinksResponse getLinks(@RequestHeader("Tg-Chat-Id") long chatId) {
+        if (chatId <= 0) {
+            throw new BadRequestException("Tg-chat id should be positive.");
         }
 
         List<LinkResponse> linkResponses = linksService.listAll(chatId)
             .stream()
-            .map(link -> new LinkResponse(link.id(), link.url()))
+            .map(link -> new LinkResponse(link.getId(), link.getUrl()))
             .toList();
 
         log.info("GET: Links were received successfully.");
@@ -91,7 +89,7 @@ public class LinksController {
 
         Link addedLink = linksService.add(chatId, addLinkRequest.link());
         log.info("POST: Link {} was added successfully.", addLinkRequest.link());
-        return new LinkResponse(addedLink.id(), addedLink.url());
+        return new LinkResponse(addedLink.getId(), addedLink.getUrl());
     }
 
     @Operation(summary = "Убрать отслеживание ссылки")
@@ -115,6 +113,6 @@ public class LinksController {
 
         Link removedLink = linksService.remove(chatId, removeLinkRequest.link());
         log.info("DELETE: Link {} was removed successfully.", removeLinkRequest.link());
-        return new LinkResponse(removedLink.id(), removedLink.url());
+        return new LinkResponse(removedLink.getId(), removedLink.getUrl());
     }
 }
