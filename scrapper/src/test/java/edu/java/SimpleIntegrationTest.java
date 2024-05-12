@@ -1,15 +1,15 @@
-package edu.java.scrapper;
+package edu.java;
 
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.sql.DataSource;
+import lombok.SneakyThrows;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class SimpleIntegrationTest extends IntegrationTest {
@@ -24,6 +24,8 @@ public class SimpleIntegrationTest extends IntegrationTest {
             id BIGINT PRIMARY KEY
         );
         """;
+    private final static String DELETE_SQL_QUERY = "DELETE FROM tg_chats";
+    private final static String DROP_SQL_QUERY = "DROP TABLE users";
 
     @BeforeAll
     public static void getDataSource() {
@@ -50,6 +52,8 @@ public class SimpleIntegrationTest extends IntegrationTest {
         }
 
         Assertions.assertThat(result.toString()).isEqualTo(expected);
+
+        statement.executeUpdate(DELETE_SQL_QUERY);
     }
 
     @Test
@@ -66,5 +70,7 @@ public class SimpleIntegrationTest extends IntegrationTest {
         );
 
         assertThat(tablesResultSet.next()).isTrue();
+
+        statement.executeUpdate(DROP_SQL_QUERY);
     }
 }
