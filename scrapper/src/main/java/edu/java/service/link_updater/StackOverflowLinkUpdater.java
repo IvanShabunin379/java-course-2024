@@ -1,6 +1,5 @@
 package edu.java.service.link_updater;
 
-import edu.java.client.BotClient;
 import edu.java.client.StackOverflowClient;
 import edu.java.domain.model.jdbc.Link;
 import edu.java.domain.model.jdbc.TgChat;
@@ -9,6 +8,7 @@ import edu.java.responses.StackOverflowResponse;
 import edu.java.responses.StackOverflowResponse.StackOverflowAnswerInfo;
 import edu.java.service.LinksService;
 import edu.java.service.TgChatsService;
+import edu.java.service.link_updates_sender.LinkUpdatesSender;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -21,7 +21,7 @@ import static edu.java.utils.LinkTypeChecker.STACK_OVERFLOW_QUESTION_URL_PATTERN
 @RequiredArgsConstructor
 public class StackOverflowLinkUpdater implements LinkUpdater<StackOverflowAnswerInfo> {
     private final StackOverflowClient stackOverflowClient;
-    private final BotClient botClient;
+    private final LinkUpdatesSender updatesSender;
     private final LinksService linksService;
     private final TgChatsService tgChatsService;
 
@@ -31,7 +31,7 @@ public class StackOverflowLinkUpdater implements LinkUpdater<StackOverflowAnswer
 
         OffsetDateTime currentTimestamp = OffsetDateTime.now();
         StackOverflowResponse response =
-                stackOverflowClient.getQuestionUpdates(questionId, link.getLastCheckTime(), currentTimestamp);
+            stackOverflowClient.getQuestionUpdates(questionId, link.getLastCheckTime(), currentTimestamp);
         linksService.updateLastCheckTime(link.getId(), currentTimestamp);
 
         return response.items();
@@ -41,21 +41,21 @@ public class StackOverflowLinkUpdater implements LinkUpdater<StackOverflowAnswer
     public void sendUpdatesToBot(Link link, List<StackOverflowAnswerInfo> updates) {
         for (var update : updates) {
             List<Long> tgChatsIds = tgChatsService.listAll(link.getUrl()).stream()
-                    .map(TgChat::getId)
-                    .toList();
+                .map(TgChat::getId)
+                .toList();
 
             LinkUpdateRequest linkUpdateRequest = new LinkUpdateRequest(
-                    link.getId(),
+                link.getId(),
+                link.getUrl(),
+                String.format(
+                    "Новый ответ добавлен к вопросу %s.\n%s",
                     link.getUrl(),
-                    String.format(
-                            "Новый ответ добавлен к вопросу %s.\n%s",
-                            link.getUrl(),
-                            update.timestamp().toString()
-                    ),
-                    tgChatsIds
+                    update.timestamp().toString()
+                ),
+                tgChatsIds
             );
 
-            botClient.sendLinkUpdate(linkUpdateRequest);
+            updatesSender.sendLinkUpdate(linkUpdateRequest);
         }
     }
 

@@ -1,6 +1,5 @@
 package edu.java.configuration;
 
-import edu.java.client.BotClient;
 import edu.java.client.GitHubClient;
 import edu.java.client.StackOverflowClient;
 import edu.java.retry.RetryFactory;
@@ -17,10 +16,5 @@ public class ClientConfig {
     @Bean
     public StackOverflowClient stackOverflowWebClient(ScrapperAppConfig config) {
         return new StackOverflowClient(RetryFactory.createRetry(config.stackOverflowClientRetry()));
-    }
-
-    @Bean
-    public BotClient botClient(ScrapperAppConfig config) {
-        return new BotClient(RetryFactory.createRetry(config.botClientRetry()));
     }
 }
