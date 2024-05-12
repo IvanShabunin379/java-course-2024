@@ -1,4 +1,4 @@
-package edu.java.service.jpa;
+package edu.java.scrapper.service.jpa;
 
 import edu.java.domain.model.jdbc.Link;
 import edu.java.domain.model.jdbc.TgChat;

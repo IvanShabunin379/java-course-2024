@@ -1,4 +1,4 @@
-package edu.java.service.jpa;
+package edu.java.scrapper.service.jpa;
 
 import edu.java.domain.model.jdbc.TgChat;
 import edu.java.service.exceptions.LinkNotFoundException;

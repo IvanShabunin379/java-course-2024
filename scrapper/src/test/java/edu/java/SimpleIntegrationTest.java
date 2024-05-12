@@ -1,16 +1,15 @@
-package edu.java.database;
+package edu.java;
 
-import edu.java.IntegrationTest;
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.sql.DataSource;
+import lombok.SneakyThrows;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class SimpleIntegrationTest extends IntegrationTest {

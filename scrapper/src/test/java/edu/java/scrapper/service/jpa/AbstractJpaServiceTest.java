@@ -1,8 +1,10 @@
-package edu.java.service.jpa;
+package edu.java.scrapper.service.jpa;
 
 import edu.java.IntegrationTest;
 import edu.java.domain.repository.jpa.JpaLinksRepository;
 import edu.java.domain.repository.jpa.JpaTgChatsRepository;
+import edu.java.service.jpa.JpaLinksService;
+import edu.java.service.jpa.JpaTgChatsService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;

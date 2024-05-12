@@ -26,8 +26,4 @@ public abstract class AbstractBotTest {
 
         return update;
     }
-
-    protected ScrapperClient mockScrapperClient() {
-        return mock(ScrapperClient.class);
-    }
 }

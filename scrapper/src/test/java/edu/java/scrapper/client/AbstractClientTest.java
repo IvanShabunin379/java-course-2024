@@ -1,11 +1,10 @@
-package edu.java.client;
+package edu.java.scrapper.client;
 
+import edu.java.retry.RetryBuilder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Set;
-
-import edu.java.retry.RetryBuilder;
 import lombok.SneakyThrows;
 import reactor.util.retry.Retry;
 

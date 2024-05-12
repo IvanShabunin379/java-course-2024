@@ -1,9 +1,11 @@
-package edu.java.domain.repository.jpa;
+package edu.java.scrapper.domain.repository.jpa;
 
 import edu.java.domain.model.jpa.TgChatEntity;
 import edu.java.IntegrationTest;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+
+import edu.java.domain.repository.jpa.JpaTgChatsRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

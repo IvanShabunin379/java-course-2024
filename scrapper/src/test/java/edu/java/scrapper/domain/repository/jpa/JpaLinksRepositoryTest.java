@@ -1,4 +1,4 @@
-package edu.java.domain.repository.jpa;
+package edu.java.scrapper.domain.repository.jpa;
 
 import edu.java.IntegrationTest;
 import edu.java.domain.model.jpa.LinkEntity;
@@ -6,6 +6,7 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import edu.java.domain.repository.jpa.JpaLinksRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
